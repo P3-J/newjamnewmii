@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2itkcw41pqqm"]
+
+[ext_resource type="Script" path="res://scripts/SignalBus.cs" id="1_ovqxf"]
+
+[node name="SignalBus" type="Node"]
+script = ExtResource("1_ovqxf")
