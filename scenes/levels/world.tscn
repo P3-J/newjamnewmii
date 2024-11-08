@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://of5b0s8j2tsu" path="res://scenes/player.tscn" id="3_3ftvp"]
 
 [node name="world" type="Node2D"]
+process_mode = 1
 script = ExtResource("1_gg6kr")
 
 [node name="assets" type="Node2D" parent="."]
@@ -13,7 +14,7 @@ script = ExtResource("1_gg6kr")
 position = Vector2(264, 6)
 
 [node name="Coin2" parent="assets" instance=ExtResource("1_t8fq1")]
-position = Vector2(812, 201)
+position = Vector2(475, -140)
 
 [node name="player" parent="." instance=ExtResource("3_3ftvp")]
 
@@ -26,6 +27,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="coins" type="RichTextLabel" parent="ui"]
+layout_mode = 0
 offset_left = 462.0
 offset_top = 192.0
 offset_right = 692.0

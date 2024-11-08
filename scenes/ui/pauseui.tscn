@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://bb6awxbjrpba4"]
+
+[ext_resource type="Script" path="res://scripts/Pauseui.cs" id="1_8cwj5"]
+
+[node name="pauseui" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8cwj5")
+
+[node name="pausetext" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.541
+anchor_top = 0.426
+anchor_right = 0.541
+anchor_bottom = 0.426
+offset_left = -112.232
+offset_top = -36.048
+offset_right = 112.768
+offset_bottom = 35.952
+theme_override_font_sizes/normal_font_size = 32
+text = "Paused"
