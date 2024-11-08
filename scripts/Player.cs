@@ -4,8 +4,13 @@ using System;
 public partial class Player : CharacterBody2D
 {
 
+	[Export]
+    public PackedScene BulletScene;
 	Node2D AimSpotParent;
 	Sprite2D GunSprite;
+	Marker2D BulletSpot; // where bullet should aim towards
+	Marker2D BulletSpawnPoint;
+
 	public const float Speed = 300.0f;
 	public const float JumpVelocity = -400.0f;
 
@@ -15,6 +20,8 @@ public partial class Player : CharacterBody2D
 
 		AimSpotParent = GetNode<Node2D>("aimspotparent");
 		GunSprite = GetNode<Sprite2D>("aimspotparent/aimspot/gun");
+		BulletSpot = GetNode<Marker2D>("aimspotparent/aimspot/gun/bulletSpot");
+		BulletSpawnPoint = GetNode<Marker2D>("aimspotparent/aimspot/gun/bulletSpawnPoint");
     }
     public override void _PhysicsProcess(double delta)
 	{
@@ -46,9 +53,28 @@ public partial class Player : CharacterBody2D
         aimSpotLookAtParent(GetViewport().GetCamera2D().GetGlobalMousePosition());
     }
 
+    public override void _Input(InputEvent @event)
+    {
+        if (Input.IsActionPressed("lmb")){
+			ShootBullet();
+		}
+    }
+
+	private void ShootBullet(){
+		Bullet bullet = (Bullet)BulletScene.Instantiate();
+
+		Vector2 Direction = (BulletSpot.GlobalPosition - BulletSpawnPoint.GlobalPosition).Normalized();
+		bullet.Direction = Direction;
+		bullet.Position = BulletSpawnPoint.GlobalPosition;
+		bullet.LookAt(BulletSpot.GlobalPosition);
+		GetTree().CurrentScene.AddChild(bullet);
+		
+	}
+
 
     public void aimSpotLookAtParent(Vector2 MousePosition){
 		AimSpotParent.LookAt(MousePosition);
+
 
 		if (MousePosition.X > Position.X){
 			GunSprite.FlipV = false;
