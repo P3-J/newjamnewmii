@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
 using Godot;
 
 public partial class Player : CharacterBody2D
@@ -15,6 +16,12 @@ public partial class Player : CharacterBody2D
     public const float JumpVelocity = -400.0f;
 
     public const double BulletSpreadMax = 0.2;
+
+    // In milliseconds
+    public const int FireRate = 50;
+
+    // Arbitrarily large value to always fire after init
+    public ulong LastBulletTime = 0;
 
     public override void _Ready()
     {
@@ -54,12 +61,9 @@ public partial class Player : CharacterBody2D
     public override void _Process(double delta)
     {
         aimSpotLookAtParent(GetViewport().GetCamera2D().GetGlobalMousePosition());
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        if (Input.IsActionPressed("lmb"))
+        if (Input.IsActionPressed("lmb") && (Time.GetTicksMsec() > LastBulletTime + FireRate))
         {
+            LastBulletTime = Time.GetTicksMsec();
             ShootBullet();
         }
     }
