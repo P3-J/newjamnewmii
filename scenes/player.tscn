@@ -9,7 +9,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xx8r0"]
 size = Vector2(128, 128)
 
-[node name="player" type="CharacterBody2D"]
+[node name="player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_rfdtd")
 BulletScene = ExtResource("2_n4q7m")
 

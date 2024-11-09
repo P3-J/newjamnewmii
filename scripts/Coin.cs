@@ -3,14 +3,11 @@ using Godot;
 
 public partial class Coin : Area2D
 {
-    [Signal]
-    public delegate void PlayerTouchedCoinEventHandler();
-    private SignalBus sgbus;
-
-    public override void _Ready()
-    {
-        sgbus = GetNode<SignalBus>("/root/SignalBus");
-    }
+	private SignalBus sgbus;
+	
+	public override void _Ready(){
+		sgbus = GetNode<SignalBus>("/root/SignalBus");
+	}
 
     private void _on_body_entered(Node2D body)
     {
