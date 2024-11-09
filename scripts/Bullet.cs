@@ -8,7 +8,7 @@ public partial class Bullet : Area2D
 
     public int dmg = 1;
 
-    public float AliveTime = 3f;
+    public const float AliveTime = 3f;
 
     private Timer _timer;
 
