@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://cnh37qq7ctp1e"]
+
+[ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_72sam"]
+[ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_dgpba"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pnqe8"]
+size = Vector2(88, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ra5k"]
+size = Vector2(94, 68)
+
+[node name="enemy" type="CharacterBody2D"]
+script = ExtResource("1_72sam")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 14)
+shape = SubResource("RectangleShape2D_pnqe8")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(-1.90735e-06, 14)
+scale = Vector2(0.6875, 0.46875)
+texture = ExtResource("1_dgpba")
+
+[node name="hp" type="ProgressBar" parent="."]
+offset_left = -72.0
+offset_top = -56.0
+offset_right = 72.0
+offset_bottom = -29.0
+max_value = 10.0
+show_percentage = false
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1, 14)
+shape = SubResource("RectangleShape2D_1ra5k")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

@@ -6,6 +6,7 @@ public partial class Player : CharacterBody2D
 
 	[Export]
     public PackedScene BulletScene;
+
 	Node2D AimSpotParent;
 	Sprite2D GunSprite;
 	Marker2D BulletSpot; // where bullet should aim towards
@@ -22,6 +23,8 @@ public partial class Player : CharacterBody2D
 		GunSprite = GetNode<Sprite2D>("aimspotparent/aimspot/gun");
 		BulletSpot = GetNode<Marker2D>("aimspotparent/aimspot/gun/bulletSpot");
 		BulletSpawnPoint = GetNode<Marker2D>("aimspotparent/aimspot/gun/bulletSpawnPoint");
+
+		
     }
     public override void _PhysicsProcess(double delta)
 	{
@@ -65,6 +68,7 @@ public partial class Player : CharacterBody2D
 
 		Vector2 Direction = (BulletSpot.GlobalPosition - BulletSpawnPoint.GlobalPosition).Normalized();
 		bullet.Direction = Direction;
+
 		bullet.Position = BulletSpawnPoint.GlobalPosition;
 		bullet.LookAt(BulletSpot.GlobalPosition);
 		GetTree().CurrentScene.AddChild(bullet);
