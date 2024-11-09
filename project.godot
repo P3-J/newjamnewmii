@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="newjamnewmii"
-run/main_scene="res://scenes/levels/world.tscn"
+run/main_scene="res://scenes/levels/room.tscn"
 config/features=PackedStringArray("4.3", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 SignalBus="*res://scenes/signal_bus.tscn"
+Globals="*res://scenes/globals.tscn"
 
 [display]
 

@@ -3,8 +3,6 @@ using System;
 
 public partial class Coin : Area2D
 {
-	[Signal]
-    public delegate void PlayerTouchedCoinEventHandler(); 
 	private SignalBus sgbus;
 	
 	public override void _Ready(){

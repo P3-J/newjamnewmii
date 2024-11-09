@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4fcaihjlmec4"]
+
+[ext_resource type="Script" path="res://scripts/SceneSwitcher.cs" id="1_88ayc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vvsy8"]
+
+[node name="SceneSwitcher" type="Area2D"]
+script = ExtResource("1_88ayc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vvsy8")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
