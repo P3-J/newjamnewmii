@@ -1,11 +1,9 @@
 using System;
 using Godot;
 
-public partial class Enemy : CharacterBody2D
+public partial class Enemy : CharacterBase
 {
     ProgressBar hpbar;
-    private int maxhp = 10;
-    private int currenthp = 10;
 
     public override void _Ready()
     {
@@ -13,8 +11,9 @@ public partial class Enemy : CharacterBody2D
 
         hpbar = GetNode<ProgressBar>("hp");
 
-        hpbar.MaxValue = maxhp;
-        hpbar.Value = maxhp;
+        hpbar.MaxValue = MaxHp;
+        hpbar.Value = MaxHp;
+        CurrentHp = MaxHp;
     }
 
     private void _on_area_2d_area_entered(Area2D area)
@@ -29,10 +28,10 @@ public partial class Enemy : CharacterBody2D
 
     private void TakeDmg(int dmg)
     {
-        currenthp -= dmg;
-        hpbar.Value = currenthp;
+        CurrentHp -= dmg;
+        hpbar.Value = CurrentHp;
 
-        if (currenthp <= 0)
+        if (CurrentHp <= 0)
         {
             QueueFree();
         }

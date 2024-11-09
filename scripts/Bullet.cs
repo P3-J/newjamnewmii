@@ -4,7 +4,7 @@ using Godot;
 public partial class Bullet : Area2D
 {
     public Vector2 Direction = new(0, 0);
-    public float Speed = 200f;
+    public float Speed = 350f;
 
     public int dmg = 1;
 
