@@ -19,6 +19,12 @@ config/icon="res://icon.svg"
 
 SignalBus="*res://scenes/signal_bus.tscn"
 
+[display]
+
+window/size/viewport_width=1100
+window/size/viewport_height=700
+window/stretch/mode="viewport"
+
 [dotnet]
 
 project/assembly_name="newjamnewmii"
