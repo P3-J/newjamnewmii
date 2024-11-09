@@ -54,10 +54,6 @@ public partial class Player : CharacterBody2D
     public override void _Process(double delta)
     {
         aimSpotLookAtParent(GetViewport().GetCamera2D().GetGlobalMousePosition());
-    }
-
-    public override void _Input(InputEvent @event)
-    {
         if (Input.IsActionPressed("lmb"))
         {
             ShootBullet();
