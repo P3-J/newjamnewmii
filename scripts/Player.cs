@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using Godot;
 
-public partial class Player : CharacterBody2D
+public partial class Player : CharacterBase
 {
     [Export]
     public PackedScene BulletScene;
@@ -11,14 +11,17 @@ public partial class Player : CharacterBody2D
     Sprite2D GunSprite;
     Marker2D BulletSpot; // where bullet should aim towards
     Marker2D BulletSpawnPoint;
+	AnimatedSprite2D PlayerSprites;
+	AnimationPlayer WalkingAnimController;
+	Node2D GunChildrenBurgerFlipper;
 
-    public const float Speed = 300.0f;
+	Camera2D ViewPortCamera; // not real cam just viewport
     public const float JumpVelocity = -400.0f;
 
-    public const double BulletSpreadMax = 0.2;
+    public const double BulletSpreadMax = 0.1;
 
     // In milliseconds
-    public const int FireRate = 50;
+    public const int FireRate = 400;
 
     // Arbitrarily large value to always fire after init
     public ulong LastBulletTime = 0;
@@ -28,9 +31,14 @@ public partial class Player : CharacterBody2D
         base._Ready();
 
         AimSpotParent = GetNode<Node2D>("aimspotparent");
-        GunSprite = GetNode<Sprite2D>("aimspotparent/aimspot/gun");
-        BulletSpot = GetNode<Marker2D>("aimspotparent/aimspot/gun/bulletSpot");
-        BulletSpawnPoint = GetNode<Marker2D>("aimspotparent/aimspot/gun/bulletSpawnPoint");
+        GunSprite = GetNode<Sprite2D>("aimspotparent/NodeToFlipAllChildren/gun");
+        BulletSpot = GetNode<Marker2D>("aimspotparent/NodeToFlipAllChildren/gun/bulletSpot");
+        BulletSpawnPoint = GetNode<Marker2D>("aimspotparent/NodeToFlipAllChildren/gun/bulletSpawnPoint");
+		PlayerSprites = GetNode<AnimatedSprite2D>("sprite");
+		WalkingAnimController = GetNode<AnimationPlayer>("feet/walkinganimcontroller");
+
+		GunChildrenBurgerFlipper = GetNode<Node2D>("aimspotparent/NodeToFlipAllChildren");
+		ViewPortCamera = GetViewport().GetCamera2D();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -42,7 +50,9 @@ public partial class Player : CharacterBody2D
             velocity.Y = JumpVelocity;
         }
 
-        Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+        Vector2 direction = Input.GetVector("left", "right", "up", "down");
+		SetPlayerSpriteDirection(direction); // stupid pidevalt checkida ja mitte siis kui inputi pariselt vajutatakse aga whatever
+
         if (direction != Vector2.Zero)
         {
             velocity.X = direction.X * Speed;
@@ -58,9 +68,50 @@ public partial class Player : CharacterBody2D
         MoveAndSlide();
     }
 
+    private void SetPlayerSpriteDirection(Vector2 direction)
+    {
+		// set player direction based on the input vector
+		// prob smarter way to do this who cares
+
+		if (direction == Vector2.Zero){
+			PlayerSprites.Play("front");
+			WalkingAnimController.Play("RESET");
+			PlayerSprites.FlipH = false;
+			return;
+		}
+
+		if (direction == Vector2.Left){
+			PlayerSprites.Play("side");
+			WalkingAnimController.Play("walkleft");
+			PlayerSprites.FlipH = true;
+			return;
+		}
+		PlayerSprites.FlipH = false; // fix this later doesnt work with diagonal movement 
+
+
+        if (direction == Vector2.Up){
+			PlayerSprites.Play("back");
+			WalkingAnimController.Play("walkupdown");
+			return;
+		}
+		if (direction == Vector2.Down){
+			PlayerSprites.Play("front");
+			WalkingAnimController.Play("walkupdown");
+			return;
+		}
+		if (direction == Vector2.Right){
+			PlayerSprites.Play("side");
+			WalkingAnimController.Play("walkright");
+			return;
+		}
+		
+		
+    }
+
+
     public override void _Process(double delta)
     {
-        aimSpotLookAtParent(GetViewport().GetCamera2D().GetGlobalMousePosition());
+        aimSpotLookAtParent(ViewPortCamera.GetGlobalMousePosition());
         if (Input.IsActionPressed("lmb") && (Time.GetTicksMsec() > LastBulletTime + FireRate))
         {
             LastBulletTime = Time.GetTicksMsec();
@@ -71,6 +122,7 @@ public partial class Player : CharacterBody2D
     private void ShootBullet()
     {
         Bullet bullet = (Bullet)BulletScene.Instantiate();
+		bullet.Position = BulletSpawnPoint.GlobalPosition;
 
         Vector2 Direction = (
             BulletSpot.GlobalPosition - BulletSpawnPoint.GlobalPosition
@@ -80,12 +132,12 @@ public partial class Player : CharacterBody2D
         // 0 - no spread
         // -1 or 1 - spread direction
         int SpreadDirectionMultiplier = rand.Next(-1, 2);
-        double RndDouble = rand.NextDouble();
-        float SpreadValue = (float)(RndDouble * BulletSpreadMax * SpreadDirectionMultiplier);
-        bullet.Direction = Direction.Rotated(SpreadValue);
+        float SpreadValue = (float)(rand.NextDouble() * BulletSpreadMax * SpreadDirectionMultiplier);
 
-        bullet.Position = BulletSpawnPoint.GlobalPosition;
-        bullet.LookAt(BulletSpot.GlobalPosition);
+		Vector2 spreadDirection = Direction.Rotated(SpreadValue);
+        bullet.Direction = spreadDirection;
+
+        bullet.LookAt(bullet.Position + spreadDirection);
         GetTree().CurrentScene.AddChild(bullet);
     }
 
@@ -95,11 +147,11 @@ public partial class Player : CharacterBody2D
 
         if (MousePosition.X > Position.X)
         {
-            GunSprite.FlipV = false;
+			GunChildrenBurgerFlipper.Scale = new(1, 1); // genius level shit
         }
         else
         {
-            GunSprite.FlipV = true;
+			GunChildrenBurgerFlipper.Scale = new(1, -1);
         }
     }
 }

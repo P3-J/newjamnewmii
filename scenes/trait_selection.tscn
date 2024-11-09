@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dkbt0ss44t3at"]
+
+[node name="TraitSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TraitCard" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+offset_left = 470.0
+offset_top = 226.0
+offset_right = 648.0
+offset_bottom = 490.0
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TraitCard"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 40.0
+offset_top = 16.0
+offset_right = 218.0
+offset_bottom = 80.0
+text = "TEST TEST"
+scroll_active = false
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="TraitCard"]
+texture_filter = 1
+offset_left = 2.0
+offset_top = 136.0
+offset_right = 178.0
+offset_bottom = 262.0
+text = "i am very very long name for effect
+
+ +50 karma "
+fit_content = true
+scroll_active = false

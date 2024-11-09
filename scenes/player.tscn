@@ -1,39 +1,222 @@
-[gd_scene load_steps=7 format=3 uid="uid://of5b0s8j2tsu"]
+[gd_scene load_steps=16 format=3 uid="uid://of5b0s8j2tsu"]
 
 [ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_c13ed"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_rfdtd"]
 [ext_resource type="PackedScene" uid="uid://dqck1anxqdc2h" path="res://scenes/bullet.tscn" id="2_n4q7m"]
-[ext_resource type="Texture2D" uid="uid://c3nq8716epmqv" path="res://textures/assettextures/gunz.png" id="3_ptfg6"]
+[ext_resource type="Texture2D" uid="uid://r42mu6g0va1p" path="res://textures/char/frontbullet.png" id="3_66blp"]
+[ext_resource type="Texture2D" uid="uid://35qnys1yqipl" path="res://textures/justicegun.png" id="3_pl6h4"]
 [ext_resource type="PackedScene" uid="uid://bb6awxbjrpba4" path="res://scenes/ui/pauseui.tscn" id="4_pw3gv"]
+[ext_resource type="Texture2D" uid="uid://brw6df8soad81" path="res://textures/char/bulletback.png" id="5_6b2ck"]
+[ext_resource type="Texture2D" uid="uid://doe0lkw5lgpax" path="res://textures/char/bulletside.png" id="6_1n723"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xx8r0"]
-size = Vector2(128, 128)
+size = Vector2(32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ln4vc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_6b2ck")
+}],
+"loop": true,
+"name": &"back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_66blp")
+}],
+"loop": true,
+"name": &"front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_1n723")
+}],
+"loop": true,
+"name": &"side",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_x0lre"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("left:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-14, 38)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("left2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(10, 38)]
+}
+
+[sub_resource type="Animation" id="Animation_h6m5v"]
+resource_name = "walkleft"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("left:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-14, 38), Vector2(-2, 40), Vector2(10, 38)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("left2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(10, 38), Vector2(-6, 34), Vector2(-12, 38)]
+}
+
+[sub_resource type="Animation" id="Animation_mxbit"]
+resource_name = "walkright"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("left:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(10, 38), Vector2(-2, 40), Vector2(-14, 38)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("left2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-12, 38), Vector2(-6, 34), Vector2(10, 38)]
+}
+
+[sub_resource type="Animation" id="Animation_5ssde"]
+resource_name = "walkupdown"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("left:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-14, 38), Vector2(-14, 31), Vector2(-14, 38)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("left2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.366667, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(10, 38), Vector2(10, 38), Vector2(10, 31), Vector2(10, 38)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vawye"]
+_data = {
+"RESET": SubResource("Animation_x0lre"),
+"walkleft": SubResource("Animation_h6m5v"),
+"walkright": SubResource("Animation_mxbit"),
+"walkupdown": SubResource("Animation_5ssde")
+}
 
 [node name="player" type="CharacterBody2D" groups=["Player"]]
+y_sort_enabled = true
 script = ExtResource("1_rfdtd")
 BulletScene = ExtResource("2_n4q7m")
 
-[node name="playerSprite" type="Sprite2D" parent="."]
-texture = ExtResource("1_c13ed")
-
 [node name="playerCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 24)
 shape = SubResource("RectangleShape2D_xx8r0")
 
 [node name="aimspotparent" type="Node2D" parent="."]
 
-[node name="aimspot" type="Marker2D" parent="aimspotparent"]
-position = Vector2(128, 0)
+[node name="NodeToFlipAllChildren" type="Node2D" parent="aimspotparent"]
 
-[node name="gun" type="Sprite2D" parent="aimspotparent/aimspot"]
+[node name="gun" type="Sprite2D" parent="aimspotparent/NodeToFlipAllChildren"]
 z_index = 1
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("3_ptfg6")
+texture_filter = 1
+position = Vector2(52, 0)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_pl6h4")
+flip_h = true
 
-[node name="bulletSpot" type="Marker2D" parent="aimspotparent/aimspot/gun"]
-position = Vector2(1472, -32)
+[node name="bulletSpot" type="Marker2D" parent="aimspotparent/NodeToFlipAllChildren/gun"]
+position = Vector2(180, -4)
 
-[node name="bulletSpawnPoint" type="Marker2D" parent="aimspotparent/aimspot/gun"]
-position = Vector2(224, -32)
+[node name="bulletSpawnPoint" type="Marker2D" parent="aimspotparent/NodeToFlipAllChildren/gun"]
+position = Vector2(8, -4)
 
 [node name="pauseui" parent="." instance=ExtResource("4_pw3gv")]
 process_mode = 3
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(-2.38419e-07, -7)
+scale = Vector2(1.625, 1.5)
+sprite_frames = SubResource("SpriteFrames_ln4vc")
+animation = &"front"
+
+[node name="feet" type="Node2D" parent="."]
+show_behind_parent = true
+position = Vector2(0, -2)
+
+[node name="left" type="Sprite2D" parent="feet"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-14, 38)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_c13ed")
+
+[node name="left2" type="Sprite2D" parent="feet"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(10, 38)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_c13ed")
+
+[node name="walkinganimcontroller" type="AnimationPlayer" parent="feet"]
+libraries = {
+"": SubResource("AnimationLibrary_vawye")
+}
+autoplay = "walkleft"
