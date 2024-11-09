@@ -1,6 +1,5 @@
-[gd_scene load_steps=9 format=3 uid="uid://of5b0s8j2tsu"]
+[gd_scene load_steps=7 format=3 uid="uid://of5b0s8j2tsu"]
 
-[ext_resource type="Shader" path="res://scenes/player.gdshader" id="1_bmgo1"]
 [ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_c13ed"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_rfdtd"]
 [ext_resource type="PackedScene" uid="uid://dqck1anxqdc2h" path="res://scenes/bullet.tscn" id="2_n4q7m"]
@@ -19,7 +18,6 @@ script = ExtResource("1_rfdtd")
 BulletScene = ExtResource("2_n4q7m")
 
 [node name="playerSprite" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_3yw6l")
 texture = ExtResource("1_c13ed")
 
 [node name="playerCollision" type="CollisionShape2D" parent="."]

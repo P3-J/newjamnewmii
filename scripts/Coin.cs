@@ -1,5 +1,5 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class Coin : Area2D
 {
@@ -9,9 +9,9 @@ public partial class Coin : Area2D
 		sgbus = GetNode<SignalBus>("/root/SignalBus");
 	}
 
-	private void _on_body_entered(Node2D body){
-		// for fun passib selle enda kaasa, koos signaaliga
-		sgbus.EmitSignal("PlayerTouchedCoin", this);
-	}
-
+    private void _on_body_entered(Node2D body)
+    {
+        // for fun passib selle enda kaasa, koos signaaliga
+        sgbus.EmitSignal("PlayerTouchedCoin", this);
+    }
 }

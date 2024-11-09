@@ -1,9 +1,9 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class SignalBus : Node
 {
-	[Signal]
+    [Signal]
     public delegate void PlayerTouchedCoinEventHandler(); // nimes peab olema EventHandler - stupid aga jahm
 
     [Signal]
