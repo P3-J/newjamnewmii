@@ -1,19 +1,20 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class Coin : Area2D
 {
-	[Signal]
-    public delegate void PlayerTouchedCoinEventHandler(); 
-	private SignalBus sgbus;
-	
-	public override void _Ready(){
-		sgbus = GetNode<SignalBus>("/root/SignalBus");
-	}
+    [Signal]
+    public delegate void PlayerTouchedCoinEventHandler();
+    private SignalBus sgbus;
 
-	private void _on_body_entered(Node2D body){
-		// for fun passib selle enda kaasa, koos signaaliga
-		sgbus.EmitSignal("PlayerTouchedCoin", this);
-	}
+    public override void _Ready()
+    {
+        sgbus = GetNode<SignalBus>("/root/SignalBus");
+    }
 
+    private void _on_body_entered(Node2D body)
+    {
+        // for fun passib selle enda kaasa, koos signaaliga
+        sgbus.EmitSignal("PlayerTouchedCoin", this);
+    }
 }
