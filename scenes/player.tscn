@@ -6,10 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://c3nq8716epmqv" path="res://textures/assettextures/gunz.png" id="3_ptfg6"]
 [ext_resource type="PackedScene" uid="uid://bb6awxbjrpba4" path="res://scenes/ui/pauseui.tscn" id="4_pw3gv"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3yw6l"]
-render_priority = 0
-shader = ExtResource("1_bmgo1")
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xx8r0"]
 size = Vector2(128, 128)
 
