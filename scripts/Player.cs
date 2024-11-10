@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Godot;
 
@@ -21,9 +22,8 @@ public partial class Player : CharacterBase
     public const double BulletSpreadMax = 0.1;
 
     // In milliseconds
-    public const int FireRate = 400;
+    public const int FireRate = 50;
 
-    // Arbitrarily large value to always fire after init
     public ulong LastBulletTime = 0;
 
     public override void _Ready()
@@ -72,44 +72,39 @@ public partial class Player : CharacterBase
 
     private void SetPlayerSpriteDirection(Vector2 direction)
     {
-        // set player direction based on the input vector
-        // prob smarter way to do this who cares
+        // Values use X vector
+        Dictionary<float, string> WalkDirectionDict =
+            new()
+            {
+                { 1f, "walkright" },
+                { -1f, "walkleft" },
+                { 0f, "walkupdown" },
+            };
+        // Values use Y vector
+        Dictionary<float, string> LookDirectionDict =
+            new()
+            {
+                { 1f, "front" },
+                { -1f, "back" },
+                { 0f, "side" },
+            };
 
+        // Standing still
         if (direction == Vector2.Zero)
         {
-            PlayerSprites.Play("front");
             WalkingAnimController.Play("RESET");
-            PlayerSprites.FlipH = false;
-            return;
         }
 
-        if (direction == Vector2.Left)
-        {
-            PlayerSprites.Play("side");
-            WalkingAnimController.Play("walkleft");
-            PlayerSprites.FlipH = true;
-            return;
-        }
-        PlayerSprites.FlipH = false; // fix this later doesnt work with diagonal movement
+        // Use AimSpotParent to have Player look in the direction of the mouse
+        float LookDirection = (float)Math.Round(Mathf.Sin(AimSpotParent.Rotation));
+        PlayerSprites.Play(LookDirectionDict[LookDirection]);
+        // Needed for flipping Player when looking to the left
+        float FlipDirection = Mathf.Cos(AimSpotParent.Rotation);
+        PlayerSprites.FlipH = FlipDirection < 0;
 
-        if (direction == Vector2.Up)
-        {
-            PlayerSprites.Play("back");
-            WalkingAnimController.Play("walkupdown");
-            return;
-        }
-        if (direction == Vector2.Down)
-        {
-            PlayerSprites.Play("front");
-            WalkingAnimController.Play("walkupdown");
-            return;
-        }
-        if (direction == Vector2.Right)
-        {
-            PlayerSprites.Play("side");
-            WalkingAnimController.Play("walkright");
-            return;
-        }
+        // Walking direction based on input vector
+        float WalkDirection = (float)Math.Round(direction.X);
+        WalkingAnimController.Play(WalkDirectionDict[WalkDirection]);
     }
 
     public override void _Process(double delta)

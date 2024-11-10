@@ -197,7 +197,7 @@ texture_filter = 1
 position = Vector2(-2.38419e-07, -7)
 scale = Vector2(1.625, 1.5)
 sprite_frames = SubResource("SpriteFrames_ln4vc")
-animation = &"front"
+animation = &"side"
 
 [node name="feet" type="Node2D" parent="."]
 show_behind_parent = true
