@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Godot;
 
@@ -72,44 +73,47 @@ public partial class Player : CharacterBase
 
     private void SetPlayerSpriteDirection(Vector2 direction)
     {
+        Dictionary<float, string> DirectionX =
+            new()
+            {
+                { 1f, "walkright" },
+                { -1f, "walkleft" },
+                { 0f, "walkupdown" },
+            };
+        Dictionary<float, string> DirectionY =
+            new()
+            {
+                { 1f, "front" },
+                { -1f, "back" },
+                { 0f, "side" },
+            };
         // set player direction based on the input vector
         // prob smarter way to do this who cares
 
+        // Standing still
         if (direction == Vector2.Zero)
         {
             PlayerSprites.Play("front");
             WalkingAnimController.Play("RESET");
-            PlayerSprites.FlipH = false;
             return;
         }
 
-        if (direction == Vector2.Left)
+        // Diagonals
+        if (direction.X != 0 && direction.Y != 0)
         {
-            PlayerSprites.Play("side");
-            WalkingAnimController.Play("walkleft");
-            PlayerSprites.FlipH = true;
-            return;
-        }
-        PlayerSprites.FlipH = false; // fix this later doesnt work with diagonal movement
+            float LeftRight = (float)Math.Round(direction.X);
+            float UpDown = (float)Math.Round(direction.Y);
 
-        if (direction == Vector2.Up)
-        {
-            PlayerSprites.Play("back");
-            WalkingAnimController.Play("walkupdown");
+            PlayerSprites.Play(DirectionY[UpDown]);
+            WalkingAnimController.Play(DirectionX[LeftRight]);
             return;
         }
-        if (direction == Vector2.Down)
-        {
-            PlayerSprites.Play("front");
-            WalkingAnimController.Play("walkupdown");
-            return;
-        }
-        if (direction == Vector2.Right)
-        {
-            PlayerSprites.Play("side");
-            WalkingAnimController.Play("walkright");
-            return;
-        }
+
+        // Left/Right/Up/Down
+        PlayerSprites.Play(DirectionY[direction.Y]);
+        WalkingAnimController.Play(DirectionX[direction.X]);
+        PlayerSprites.FlipH = direction.X < 0;
+        return;
     }
 
     public override void _Process(double delta)
