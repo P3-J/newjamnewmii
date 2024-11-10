@@ -22,10 +22,12 @@ public partial class Player : CharacterBase
     public const double BulletSpreadMax = 0.1;
 
     // In milliseconds
-    public const int FireRate = 400;
+    public const int FireRate = 50;
 
     // Arbitrarily large value to always fire after init
     public ulong LastBulletTime = 0;
+
+    public const int GunLookTime = 200;
 
     public override void _Ready()
     {
@@ -93,36 +95,20 @@ public partial class Player : CharacterBase
         // Standing still
         if (direction == Vector2.Zero)
         {
-            PlayerSprites.Play("front");
             WalkingAnimController.Play("RESET");
-            return;
         }
 
-        float WalkDirection = (float)Math.Round(direction.X);
-
-        float LookDirection;
-        if (Time.GetTicksMsec() < LastBulletTime + FireRate)
-        {
-            // gun direction
-            LookDirection = 1f;
-        }
-        else
-        {
-            LookDirection = (float)Math.Round(direction.Y);
-        }
-
-        // Diagonals
-        if (direction.X != 0 && direction.Y != 0)
-        {
-            PlayerSprites.Play(LookDirectionDict[LookDirection]);
-            WalkingAnimController.Play(WalkDirectionDict[WalkDirection]);
-            return;
-        }
-
-        // Left/Right/Up/Down
+        // Use AimSpotParent to have Player look in the direction of the mouse
+        float LookDirection = (float)Math.Round(Mathf.Sin(AimSpotParent.Rotation));
         PlayerSprites.Play(LookDirectionDict[LookDirection]);
+        // Needed for flipping Player when looking to the left
+        float FlipDirection = Mathf.Cos(AimSpotParent.Rotation);
+        PlayerSprites.FlipH = FlipDirection < 0;
+
+        // Walking direction based on input vector
+        float WalkDirection = (float)Math.Round(direction.X);
         WalkingAnimController.Play(WalkDirectionDict[WalkDirection]);
-        PlayerSprites.FlipH = direction.X < 0;
+
         return;
     }
 
