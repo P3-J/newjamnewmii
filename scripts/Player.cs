@@ -11,11 +11,11 @@ public partial class Player : CharacterBase
     Sprite2D GunSprite;
     Marker2D BulletSpot; // where bullet should aim towards
     Marker2D BulletSpawnPoint;
-	AnimatedSprite2D PlayerSprites;
-	AnimationPlayer WalkingAnimController;
-	Node2D GunChildrenBurgerFlipper;
+    AnimatedSprite2D PlayerSprites;
+    AnimationPlayer WalkingAnimController;
+    Node2D GunChildrenBurgerFlipper;
 
-	Camera2D ViewPortCamera; // not real cam just viewport
+    Camera2D ViewPortCamera; // not real cam just viewport
     public const float JumpVelocity = -400.0f;
 
     public const double BulletSpreadMax = 0.1;
@@ -33,12 +33,14 @@ public partial class Player : CharacterBase
         AimSpotParent = GetNode<Node2D>("aimspotparent");
         GunSprite = GetNode<Sprite2D>("aimspotparent/NodeToFlipAllChildren/gun");
         BulletSpot = GetNode<Marker2D>("aimspotparent/NodeToFlipAllChildren/gun/bulletSpot");
-        BulletSpawnPoint = GetNode<Marker2D>("aimspotparent/NodeToFlipAllChildren/gun/bulletSpawnPoint");
-		PlayerSprites = GetNode<AnimatedSprite2D>("sprite");
-		WalkingAnimController = GetNode<AnimationPlayer>("feet/walkinganimcontroller");
+        BulletSpawnPoint = GetNode<Marker2D>(
+            "aimspotparent/NodeToFlipAllChildren/gun/bulletSpawnPoint"
+        );
+        PlayerSprites = GetNode<AnimatedSprite2D>("sprite");
+        WalkingAnimController = GetNode<AnimationPlayer>("feet/walkinganimcontroller");
 
-		GunChildrenBurgerFlipper = GetNode<Node2D>("aimspotparent/NodeToFlipAllChildren");
-		ViewPortCamera = GetViewport().GetCamera2D();
+        GunChildrenBurgerFlipper = GetNode<Node2D>("aimspotparent/NodeToFlipAllChildren");
+        ViewPortCamera = GetViewport().GetCamera2D();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -51,7 +53,7 @@ public partial class Player : CharacterBase
         }
 
         Vector2 direction = Input.GetVector("left", "right", "up", "down");
-		SetPlayerSpriteDirection(direction); // stupid pidevalt checkida ja mitte siis kui inputi pariselt vajutatakse aga whatever
+        SetPlayerSpriteDirection(direction); // stupid pidevalt checkida ja mitte siis kui inputi pariselt vajutatakse aga whatever
 
         if (direction != Vector2.Zero)
         {
@@ -70,44 +72,45 @@ public partial class Player : CharacterBase
 
     private void SetPlayerSpriteDirection(Vector2 direction)
     {
-		// set player direction based on the input vector
-		// prob smarter way to do this who cares
+        // set player direction based on the input vector
+        // prob smarter way to do this who cares
 
-		if (direction == Vector2.Zero){
-			PlayerSprites.Play("front");
-			WalkingAnimController.Play("RESET");
-			PlayerSprites.FlipH = false;
-			return;
-		}
+        if (direction == Vector2.Zero)
+        {
+            PlayerSprites.Play("front");
+            WalkingAnimController.Play("RESET");
+            PlayerSprites.FlipH = false;
+            return;
+        }
 
-		if (direction == Vector2.Left){
-			PlayerSprites.Play("side");
-			WalkingAnimController.Play("walkleft");
-			PlayerSprites.FlipH = true;
-			return;
-		}
-		PlayerSprites.FlipH = false; // fix this later doesnt work with diagonal movement 
+        if (direction == Vector2.Left)
+        {
+            PlayerSprites.Play("side");
+            WalkingAnimController.Play("walkleft");
+            PlayerSprites.FlipH = true;
+            return;
+        }
+        PlayerSprites.FlipH = false; // fix this later doesnt work with diagonal movement
 
-
-        if (direction == Vector2.Up){
-			PlayerSprites.Play("back");
-			WalkingAnimController.Play("walkupdown");
-			return;
-		}
-		if (direction == Vector2.Down){
-			PlayerSprites.Play("front");
-			WalkingAnimController.Play("walkupdown");
-			return;
-		}
-		if (direction == Vector2.Right){
-			PlayerSprites.Play("side");
-			WalkingAnimController.Play("walkright");
-			return;
-		}
-		
-		
+        if (direction == Vector2.Up)
+        {
+            PlayerSprites.Play("back");
+            WalkingAnimController.Play("walkupdown");
+            return;
+        }
+        if (direction == Vector2.Down)
+        {
+            PlayerSprites.Play("front");
+            WalkingAnimController.Play("walkupdown");
+            return;
+        }
+        if (direction == Vector2.Right)
+        {
+            PlayerSprites.Play("side");
+            WalkingAnimController.Play("walkright");
+            return;
+        }
     }
-
 
     public override void _Process(double delta)
     {
@@ -122,7 +125,8 @@ public partial class Player : CharacterBase
     private void ShootBullet()
     {
         Bullet bullet = (Bullet)BulletScene.Instantiate();
-		bullet.Position = BulletSpawnPoint.GlobalPosition;
+        bullet.Position = BulletSpawnPoint.GlobalPosition;
+        bullet.BulletOwner = this;
 
         Vector2 Direction = (
             BulletSpot.GlobalPosition - BulletSpawnPoint.GlobalPosition
@@ -132,11 +136,12 @@ public partial class Player : CharacterBase
         // 0 - no spread
         // -1 or 1 - spread direction
         int SpreadDirectionMultiplier = rand.Next(-1, 2);
-        float SpreadValue = (float)(rand.NextDouble() * BulletSpreadMax * SpreadDirectionMultiplier);
+        float SpreadValue = (float)(
+            rand.NextDouble() * BulletSpreadMax * SpreadDirectionMultiplier
+        );
 
-		Vector2 spreadDirection = Direction.Rotated(SpreadValue);
+        Vector2 spreadDirection = Direction.Rotated(SpreadValue);
         bullet.Direction = spreadDirection;
-
         bullet.LookAt(bullet.Position + spreadDirection);
         GetTree().CurrentScene.AddChild(bullet);
     }
@@ -147,11 +152,11 @@ public partial class Player : CharacterBase
 
         if (MousePosition.X > Position.X)
         {
-			GunChildrenBurgerFlipper.Scale = new(1, 1); // genius level shit
+            GunChildrenBurgerFlipper.Scale = new(1, 1); // genius level shit
         }
         else
         {
-			GunChildrenBurgerFlipper.Scale = new(1, -1);
+            GunChildrenBurgerFlipper.Scale = new(1, -1);
         }
     }
 }
