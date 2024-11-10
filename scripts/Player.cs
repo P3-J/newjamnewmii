@@ -24,10 +24,7 @@ public partial class Player : CharacterBase
     // In milliseconds
     public const int FireRate = 50;
 
-    // Arbitrarily large value to always fire after init
     public ulong LastBulletTime = 0;
-
-    public const int GunLookTime = 200;
 
     public override void _Ready()
     {
@@ -108,8 +105,6 @@ public partial class Player : CharacterBase
         // Walking direction based on input vector
         float WalkDirection = (float)Math.Round(direction.X);
         WalkingAnimController.Play(WalkDirectionDict[WalkDirection]);
-
-        return;
     }
 
     public override void _Process(double delta)
