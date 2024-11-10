@@ -17,7 +17,6 @@ public partial class Player : CharacterBase
     Node2D GunChildrenBurgerFlipper;
 
     Camera2D ViewPortCamera; // not real cam just viewport
-    public const float JumpVelocity = -400.0f;
 
     public const double BulletSpreadMax = 0.1;
 
@@ -29,6 +28,7 @@ public partial class Player : CharacterBase
     public override void _Ready()
     {
         base._Ready();
+        globals.player = this; // global ref for enemies
 
         AimSpotParent = GetNode<Node2D>("aimspotparent");
         GunSprite = GetNode<Sprite2D>("aimspotparent/NodeToFlipAllChildren/gun");
@@ -46,11 +46,6 @@ public partial class Player : CharacterBase
     public override void _PhysicsProcess(double delta)
     {
         Vector2 velocity = Velocity;
-
-        if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
-        {
-            velocity.Y = JumpVelocity;
-        }
 
         Vector2 direction = Input.GetVector("left", "right", "up", "down");
         SetPlayerSpriteDirection(direction); // stupid pidevalt checkida ja mitte siis kui inputi pariselt vajutatakse aga whatever
