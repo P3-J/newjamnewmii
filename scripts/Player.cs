@@ -73,22 +73,22 @@ public partial class Player : CharacterBase
 
     private void SetPlayerSpriteDirection(Vector2 direction)
     {
-        Dictionary<float, string> DirectionX =
+        // Values use X vector
+        Dictionary<float, string> WalkDirectionDict =
             new()
             {
                 { 1f, "walkright" },
                 { -1f, "walkleft" },
                 { 0f, "walkupdown" },
             };
-        Dictionary<float, string> DirectionY =
+        // Values use Y vector
+        Dictionary<float, string> LookDirectionDict =
             new()
             {
                 { 1f, "front" },
                 { -1f, "back" },
                 { 0f, "side" },
             };
-        // set player direction based on the input vector
-        // prob smarter way to do this who cares
 
         // Standing still
         if (direction == Vector2.Zero)
@@ -98,20 +98,30 @@ public partial class Player : CharacterBase
             return;
         }
 
+        float WalkDirection = (float)Math.Round(direction.X);
+
+        float LookDirection;
+        if (Time.GetTicksMsec() < LastBulletTime + FireRate)
+        {
+            // gun direction
+            LookDirection = 1f;
+        }
+        else
+        {
+            LookDirection = (float)Math.Round(direction.Y);
+        }
+
         // Diagonals
         if (direction.X != 0 && direction.Y != 0)
         {
-            float LeftRight = (float)Math.Round(direction.X);
-            float UpDown = (float)Math.Round(direction.Y);
-
-            PlayerSprites.Play(DirectionY[UpDown]);
-            WalkingAnimController.Play(DirectionX[LeftRight]);
+            PlayerSprites.Play(LookDirectionDict[LookDirection]);
+            WalkingAnimController.Play(WalkDirectionDict[WalkDirection]);
             return;
         }
 
         // Left/Right/Up/Down
-        PlayerSprites.Play(DirectionY[direction.Y]);
-        WalkingAnimController.Play(DirectionX[direction.X]);
+        PlayerSprites.Play(LookDirectionDict[LookDirection]);
+        WalkingAnimController.Play(WalkDirectionDict[WalkDirection]);
         PlayerSprites.FlipH = direction.X < 0;
         return;
     }
