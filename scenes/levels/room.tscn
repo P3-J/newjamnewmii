@@ -1,12 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b7banxw8oka0t"]
+[gd_scene load_steps=6 format=3 uid="uid://b7banxw8oka0t"]
 
 [ext_resource type="Script" path="res://scripts/RoomController.cs" id="1_b6rho"]
 [ext_resource type="PackedScene" uid="uid://bs7wjgdmx1le2" path="res://scenes/tile_map.tscn" id="2_xjo6b"]
 [ext_resource type="PackedScene" uid="uid://of5b0s8j2tsu" path="res://scenes/player.tscn" id="3_05viq"]
+[ext_resource type="PackedScene" uid="uid://kpernr7ur5p4" path="res://scenes/pickup.tscn" id="5_ly3ft"]
 [ext_resource type="PackedScene" uid="uid://c4fcaihjlmec4" path="res://scenes/scene_switcher.tscn" id="5_p7dxb"]
 
-[node name="room" type="Node2D"]
+[node name="room" type="Node2D" node_paths=PackedStringArray("pickup")]
 script = ExtResource("1_b6rho")
+pickup = NodePath("pickups/pickup")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, 16)
@@ -24,3 +26,8 @@ layer_0/tile_data = PackedInt32Array(-262138, 196609, 0, 196601, 1, 1, 131065, 1
 
 [node name="player" parent="sorter" instance=ExtResource("3_05viq")]
 position = Vector2(0, 268)
+
+[node name="pickups" type="Node2D" parent="."]
+
+[node name="pickup" parent="pickups" instance=ExtResource("5_ly3ft")]
+position = Vector2(-24, 24)

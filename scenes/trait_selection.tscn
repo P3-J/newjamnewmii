@@ -1,40 +1,60 @@
-[gd_scene format=3 uid="uid://dkbt0ss44t3at"]
+[gd_scene load_steps=3 format=3 uid="uid://dkbt0ss44t3at"]
 
-[node name="TraitSelection" type="Control"]
+[ext_resource type="Script" path="res://scripts/TraitSelection.cs" id="1_exubo"]
+[ext_resource type="PackedScene" uid="uid://cxumju73dclvl" path="res://scenes/trait_card.tscn" id="1_phhpy"]
+
+[node name="TraitSelection" type="Control" node_paths=PackedStringArray("card1", "card2", "card3")]
+process_mode = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_exubo")
+card1 = NodePath("visparent/TraitCard")
+card2 = NodePath("visparent/TraitCard2")
+card3 = NodePath("visparent/TraitCard3")
 
-[node name="TraitCard" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(100, 20)
-layout_mode = 2
-offset_left = 470.0
-offset_top = 226.0
-offset_right = 648.0
-offset_bottom = 490.0
-color = Color(0, 0, 0, 1)
+[node name="visparent" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_left = -422.0
+offset_top = -376.0
+offset_right = -382.0
+offset_bottom = -336.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TraitCard"]
-texture_filter = 1
+[node name="TraitCard" parent="visparent" instance=ExtResource("1_phhpy")]
+z_index = 100
 layout_mode = 0
-offset_left = 40.0
-offset_top = 16.0
-offset_right = 218.0
-offset_bottom = 80.0
-text = "TEST TEST"
-scroll_active = false
+offset_left = 132.0
+offset_top = 232.0
+offset_right = 310.0
+offset_bottom = 496.0
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="TraitCard"]
-texture_filter = 1
-offset_left = 2.0
-offset_top = 136.0
-offset_right = 178.0
-offset_bottom = 262.0
-text = "i am very very long name for effect
+[node name="TraitCard2" parent="visparent" instance=ExtResource("1_phhpy")]
+z_index = 100
+layout_mode = 0
+offset_left = 350.0
+offset_top = 232.0
+offset_right = 528.0
+offset_bottom = 496.0
 
- +50 karma "
-fit_content = true
-scroll_active = false
+[node name="TraitCard3" parent="visparent" instance=ExtResource("1_phhpy")]
+z_index = 100
+layout_mode = 0
+offset_left = 554.0
+offset_top = 234.0
+offset_right = 732.0
+offset_bottom = 498.0
+
+[node name="Button" type="Button" parent="visparent"]
+z_index = 100
+layout_mode = 0
+offset_left = 414.0
+offset_top = 546.0
+offset_right = 485.0
+offset_bottom = 577.0
+text = "Confirm"
+
+[connection signal="pressed" from="visparent/Button" to="." method="_on_button_pressed"]
