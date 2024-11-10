@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://b7banxw8oka0t"]
 
 [ext_resource type="Script" path="res://scripts/RoomController.cs" id="1_b6rho"]
-[ext_resource type="PackedScene" path="res://scenes/tile_map.tscn" id="2_xjo6b"]
+[ext_resource type="PackedScene" uid="uid://bs7wjgdmx1le2" path="res://scenes/tile_map.tscn" id="2_xjo6b"]
 [ext_resource type="PackedScene" uid="uid://of5b0s8j2tsu" path="res://scenes/player.tscn" id="3_05viq"]
-[ext_resource type="PackedScene" path="res://scenes/scene_switcher.tscn" id="5_p7dxb"]
+[ext_resource type="PackedScene" uid="uid://c4fcaihjlmec4" path="res://scenes/scene_switcher.tscn" id="5_p7dxb"]
 
 [node name="room" type="Node2D"]
 script = ExtResource("1_b6rho")

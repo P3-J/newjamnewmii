@@ -26,9 +26,13 @@ public partial class Player : CharacterBase
     // Arbitrarily large value to always fire after init
     public ulong LastBulletTime = 0;
 
+    Globals globals;
+
     public override void _Ready()
     {
         base._Ready();
+        globals = GetNode<Globals>("/root/Globals");
+        globals.player = this; // global ref for enemies
 
         AimSpotParent = GetNode<Node2D>("aimspotparent");
         GunSprite = GetNode<Sprite2D>("aimspotparent/NodeToFlipAllChildren/gun");
