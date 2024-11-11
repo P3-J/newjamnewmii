@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cpya81q5kehfq"]
+
+[node name="startpos" type="Marker2D"]
+position = Vector2(6, 4)
+
+[node name="endpos" type="Marker2D" parent="."]
