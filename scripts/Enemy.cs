@@ -6,9 +6,16 @@ public partial class Enemy : CharacterBase
 
     NavigationAgent2D NavAgent;
 
+    AnimatedSprite2D enemySprite;
     
     RayCast2D aggroray;
     Node2D rayparent;
+
+    public enum EnemyType{
+        c4,
+        makaron
+    }
+    [Export] public EnemyType enemytypeselection {get; set;}
 
     public override void _Ready()
     {
@@ -19,10 +26,13 @@ public partial class Enemy : CharacterBase
         hpbar = GetNode<ProgressBar>("hp");
         aggroray = GetNode<RayCast2D>("rayparent/aggroray");
         rayparent = GetNode<Node2D>("rayparent");
+        enemySprite = GetNode<AnimatedSprite2D>("enemysprite");
         
         hpbar.MaxValue = MaxHp;
         hpbar.Value = MaxHp;
         CurrentHp = MaxHp;
+
+        SetEnemyTypeSprite();
 
         NavAgent.TargetPosition = GetPlayerPos();
     }
@@ -40,6 +50,11 @@ public partial class Enemy : CharacterBase
             Vector2 nextPoint = NavAgent.GetNextPathPosition();
             Vector2 direction = (nextPoint - GlobalPosition).Normalized();
             Velocity = direction * Speed;
+
+            
+            enemySprite.FlipH = direction.X > 0;
+            
+
             MoveAndSlide();
 
         }
@@ -52,6 +67,17 @@ public partial class Enemy : CharacterBase
     private void CheckForTraitsToApply()
     {
         throw new NotImplementedException();
+    }
+
+    private void SetEnemyTypeSprite(){
+        switch (enemytypeselection){
+            case EnemyType.c4:
+                enemySprite.Animation = "tseneli";
+                break;
+            case EnemyType.makaron:
+                enemySprite.Animation = "makaron";
+                break;
+        }
     }
 
 
