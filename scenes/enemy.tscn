@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxhxix5mq7m6h"]
+[gd_scene load_steps=7 format=3 uid="uid://dxhxix5mq7m6h"]
 
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_72sam"]
 [ext_resource type="Texture2D" uid="uid://cbmaw0qlcrgya" path="res://textures/char/makaron.png" id="2_xpxu6"]
@@ -26,6 +26,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_75o21"]
+size = Vector2(32, 52)
+
 [node name="enemy" type="CharacterBody2D" groups=["Enemy"]]
 y_sort_enabled = true
 floor_block_on_wall = false
@@ -47,7 +50,6 @@ show_percentage = false
 
 [node name="navagent" type="NavigationAgent2D" parent="."]
 navigation_layers = 3
-debug_enabled = true
 debug_path_custom_color = Color(0.877024, 0.0585291, 0.034255, 1)
 debug_path_custom_point_size = 5.45
 debug_path_custom_line_width = 3.88
@@ -62,3 +64,9 @@ texture_filter = 1
 position = Vector2(0, 12)
 sprite_frames = SubResource("SpriteFrames_ejey4")
 animation = &"tseneli"
+
+[node name="enemyhitbox" type="Area2D" parent="." groups=["Enemy"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyhitbox"]
+position = Vector2(0, 10)
+shape = SubResource("RectangleShape2D_75o21")

@@ -40,8 +40,9 @@ position = Vector2(0, 256)
 
 [node name="enemy" parent="sorter" node_paths=PackedStringArray("PatrolPathStart") instance=ExtResource("5_5707u")]
 position = Vector2(-228, -64)
+enemytypeselection = 1
 PatrolPathStart = NodePath("../../patrolpaths/startpos")
-Speed = 10.0
+Speed = 40.0
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="sorter"]
 scale = Vector2(5, 5)
@@ -54,6 +55,7 @@ layer_1/tile_data = PackedInt32Array(-131078, 2, 0, -131077, 2, 0, -131076, 2, 0
 
 [node name="enemy2" parent="sorter" instance=ExtResource("5_5707u")]
 position = Vector2(196, -40)
+Speed = 40.0
 
 [node name="patrolpaths" type="Node2D" parent="."]
 

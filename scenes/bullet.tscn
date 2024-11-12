@@ -19,4 +19,5 @@ scale = Vector2(0.375, 0.3125)
 texture = ExtResource("2_04jym")
 flip_h = true
 
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -31,18 +31,17 @@ public partial class Bullet : Area2D
 
     private void _on_body_entered(Node2D node)
     {
-        if (node is not CharacterBase character)
-        {
-            QueueFree();
-            return;
-        }
-        if (
-            BulletOwner.IsInGroup("Player") && node.IsInGroup("Enemy")
-            || BulletOwner.IsInGroup("Enemy") && node.IsInGroup("Player")
-        )
-        {
-            character.TakeDmg(dmg: dmg);
-            QueueFree();
-        }
+        if (node is not CharacterBase character){QueueFree();}
     }
+
+    private void _on_area_shape_entered(Rid rid, Area2D area, int shapeindex, int localshapeindex){
+
+        if (BulletOwner.IsInGroup("Player") && area.IsInGroup("Enemy") || BulletOwner.IsInGroup("Enemy") && area.IsInGroup("Player"))
+        {
+            area.GetParent<CharacterBase>().TakeDmg(dmg: dmg);
+            QueueFree();
+        }
+
+    }
+
 }
