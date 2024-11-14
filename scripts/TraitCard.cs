@@ -1,12 +1,11 @@
 using System;
 using Godot;
 
-public partial class TraitCard : ColorRect
+public partial class TraitCard : Panel
 {
     Sprite2D Icon;
-    RichTextLabel Name;
+    RichTextLabel traitName;
     RichTextLabel Effect;
-    ColorRect HoverIndicator;
     private bool Highlighted = false;
     public int TraitNumber;
     public SignalBus sgbus;
@@ -18,9 +17,8 @@ public partial class TraitCard : ColorRect
     {
         sgbus = GetNode<SignalBus>("/root/SignalBus");
         Icon = GetNode<Sprite2D>("icon");
-        Name = GetNode<RichTextLabel>("name");
-        Effect = GetNode<RichTextLabel>("effect");
-        HoverIndicator = GetNode<ColorRect>("hoverindicator");
+        traitName = GetNode<RichTextLabel>("name");
+        Effect = GetNode<RichTextLabel>("text");
 
         sgbus.Connect("UnHighlightOtherCards", new Callable(this, nameof(Unhighlight)));
     }
@@ -29,7 +27,6 @@ public partial class TraitCard : ColorRect
     {
         if (Input.IsActionJustPressed("lmb") && Highlighted)
         {
-            HoverIndicator.Visible = true;
             sgbus.EmitSignal("UnHighlightOtherCards", this);
             EmitSignal("CurrentlySelectedCard", this);
         }
@@ -39,7 +36,11 @@ public partial class TraitCard : ColorRect
     {
         if (card != this)
         {
-            HoverIndicator.Visible = false;
+            SelfModulate = Colors.White;
+        }
+        else
+        {
+            SelfModulate = Colors.Gold;
         }
     }
 
@@ -47,17 +48,19 @@ public partial class TraitCard : ColorRect
     {
         string[] info = TraitBase.GetTraitDescAndName(traitNumber);
         Effect.Text = info[0];
-        Name.Text = info[1];
+        traitName.Text = info[1];
         TraitNumber = traitNumber;
     }
 
     public void _on_mouse_entered()
     {
+        Modulate = Colors.Gray;
         Highlighted = true;
     }
 
     public void _on_mouse_exited()
     {
+        Modulate = Colors.White;
         Highlighted = false;
     }
 }

@@ -1,54 +1,64 @@
-[gd_scene load_steps=3 format=3 uid="uid://cxumju73dclvl"]
+[gd_scene load_steps=4 format=3 uid="uid://cxumju73dclvl"]
 
 [ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_41x3r"]
 [ext_resource type="Script" path="res://scripts/TraitCard.cs" id="1_j1xyy"]
 
-[node name="TraitCard" type="ColorRect"]
-custom_minimum_size = Vector2(100, 20)
-offset_left = 150.0
-offset_top = 230.0
-offset_right = 328.0
-offset_bottom = 494.0
-color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_831jn"]
+bg_color = Color(0.0338533, 0.0338533, 0.0338532, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.912289, 0.912289, 0.912289, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(1, 1, 1, 0.6)
+shadow_size = 3
+
+[node name="TraitCard" type="Panel"]
+offset_right = 178.0
+offset_bottom = 264.0
+focus_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_831jn")
 script = ExtResource("1_j1xyy")
 
-[node name="name" type="RichTextLabel" parent="."]
-texture_filter = 1
-layout_mode = 0
-offset_left = -2.0
-offset_top = 2.0
-offset_right = 176.0
-offset_bottom = 66.0
-mouse_filter = 2
-text = "TEST TEST"
-scroll_active = false
-
-[node name="effect" type="RichTextLabel" parent="."]
-texture_filter = 1
-layout_mode = 0
-offset_left = 2.0
-offset_top = 136.0
-offset_right = 178.0
-offset_bottom = 262.0
-mouse_filter = 2
-text = "i am very very long name for effect
-
- +50 karma "
-fit_content = true
-scroll_active = false
-
 [node name="icon" type="Sprite2D" parent="."]
-position = Vector2(88, 80)
+position = Vector2(38, 39)
 scale = Vector2(0.484375, 0.453125)
 texture = ExtResource("1_41x3r")
 
-[node name="hoverindicator" type="ColorRect" parent="."]
-visible = false
+[node name="name" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 130.0
-offset_top = 8.0
-offset_right = 170.0
-offset_bottom = 48.0
+offset_left = 73.0
+offset_top = 10.0
+offset_right = 171.0
+offset_bottom = 77.0
+mouse_filter = 1
+theme_override_colors/font_selected_color = Color(0.510123, 0.325114, 0.953591, 1)
+theme_override_font_sizes/normal_font_size = 13
+text = "Walls can't stop me! (or them)"
 
+[node name="text" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 92.0
+offset_right = 173.0
+offset_bottom = 178.0
+mouse_filter = 1
+theme_override_font_sizes/normal_font_size = 20
+text = "+10% to chance for bullets to penetrate walls"
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2(5.89423, 79)
+scale = Vector2(0.889423, 0.45)
+points = PackedVector2Array(188, 2, 0, 2)
+default_color = Color(0.489622, 0.489622, 0.489622, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
