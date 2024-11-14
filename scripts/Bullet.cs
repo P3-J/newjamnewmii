@@ -36,8 +36,8 @@ public partial class Bullet : Area2D
         // check for wall penetration chance
         if (wallPenChance < 1f)
         {
-            Random random = new Random();
-            float randomFloat = (float)(random.NextDouble() * 1f);
+            Random random = new();
+            float randomFloat = random.Next(0, 1001) / 1000f;
             if (randomFloat > wallPenChance)
             {
                 return;

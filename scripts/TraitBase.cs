@@ -9,7 +9,7 @@ public class TraitBase
 
 
     // inc this
-    public static int TraitCount { get; set; } = 5;
+    public static int TraitCount { get; set; } = 7;
 
     public static void ApplyTrait(Globals globals, int TraitNumber)
     {
@@ -33,6 +33,12 @@ public class TraitBase
             case 5:
                 ApplyWallPenetrationTrait(globals);
                 break;
+            case 6:
+                ApplyProjSpeedTrait(globals);
+                break;
+            case 7:
+                ApplyFireRateTrait(globals);
+                break;
         }
     }
 
@@ -51,9 +57,17 @@ public class TraitBase
             case 5:
                 return new string[]
                 {
-                    "+5% chance for bullets to penetrate walls",
+                    "+10% to chance for bullets to penetrate walls",
                     "Walls can't stop me! (or them)",
                 };
+            case 6:
+                return new string[]
+                {
+                    "+15% to Projectile Speed\n-5% to Damage",
+                    "Fast...but not furious",
+                };
+            case 7:
+                return new string[] { "+20% to Fire rate\n-15% to Accuracy", "Rambo" };
             default:
                 return new string[] { "error with retrival", "error with retrival" };
         }
@@ -61,7 +75,7 @@ public class TraitBase
 
     private static void ApplyProjSizeTrait(Globals globals)
     {
-        globals.globalProjMulti *= 1.25f;
+        globals.globalProjSizeMulti *= 1.25f;
         globals.globalDamageMulti *= 0.9f;
     }
 
@@ -84,6 +98,19 @@ public class TraitBase
 
     private static void ApplyWallPenetrationTrait(Globals globals)
     {
-        globals.globalWallPenetrationChance *= 0.95f;
+        globals.globalWallPenetrationChance *= 0.90f;
+    }
+
+    private static void ApplyProjSpeedTrait(Globals globals)
+    {
+        globals.globalProjSpeedMulti *= 1.15f;
+        globals.globalDamageMulti *= 0.95f;
+    }
+
+    private static void ApplyFireRateTrait(Globals globals)
+    {
+        // firerate = time between bullets
+        globals.globalFireRateMulti *= 0.80f;
+        globals.globalSpreadMulti *= 1.15f;
     }
 }
