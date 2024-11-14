@@ -6,11 +6,11 @@ public partial class Bullet : Area2D
     public Vector2 Direction = new(0, 0);
     public float Speed = 450f;
 
-    public int dmg = 1;
-
     public const float AliveTime = 1.5f;
 
     public Node BulletOwner;
+
+    public float dmg;
 
     private Timer _timer;
 
@@ -31,17 +31,21 @@ public partial class Bullet : Area2D
 
     private void _on_body_entered(Node2D node)
     {
-        if (node is not CharacterBase character){QueueFree();}
+        if (node is not CharacterBase character)
+        {
+            QueueFree();
+        }
     }
 
-    private void _on_area_shape_entered(Rid rid, Area2D area, int shapeindex, int localshapeindex){
-
-        if (BulletOwner.IsInGroup("Player") && area.IsInGroup("Enemy") || BulletOwner.IsInGroup("Enemy") && area.IsInGroup("Player"))
+    private void _on_area_shape_entered(Rid rid, Area2D area, int shapeindex, int localshapeindex)
+    {
+        if (
+            BulletOwner.IsInGroup("Player") && area.IsInGroup("Enemy")
+            || BulletOwner.IsInGroup("Enemy") && area.IsInGroup("Player")
+        )
         {
             area.GetParent<CharacterBase>().TakeDmg(dmg: dmg);
             QueueFree();
         }
-
     }
-
 }

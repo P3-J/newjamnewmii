@@ -4,11 +4,15 @@ using Godot;
 public partial class CharacterBase : CharacterBody2D
 {
     [Export]
-    public int MaxHp = 10;
+    public float MaxHp = 10;
 
     [Export]
     public float Speed = 200.0f;
-    public int CurrentHp;
+
+    public float charBaseProjSize;
+    public float charBaseDmg;
+
+    public float CurrentHp;
     public ProgressBar hpbar;
     public Globals globals;
     public SignalBus sgbus;
@@ -18,9 +22,20 @@ public partial class CharacterBase : CharacterBody2D
         globals = GetNode<Globals>("/root/Globals");
         sgbus = GetNode<SignalBus>("/root/SignalBus");
 
+        charBaseProjSize = globals.globalProjMulti;
+        charBaseDmg = globals.globalDamageMulti;
+        Scale = new(globals.globalCharSizeMulti, globals.globalCharSizeMulti);
+
+        sgbus.Connect("NewTraitSelected", new Callable(this, nameof(UpdateStats)));
     }
 
-    public void TakeDmg(int dmg)
+    public void UpdateStats()
+    {
+        charBaseProjSize = globals.globalProjMulti;
+        charBaseDmg = globals.globalDamageMulti;
+    }
+
+    public void TakeDmg(float dmg)
     {
         CurrentHp -= dmg;
         hpbar.Value = CurrentHp;
@@ -31,12 +46,12 @@ public partial class CharacterBase : CharacterBody2D
         }
     }
 
-    public void Die(){
-        if (this.IsInGroup("Enemy")){
+    public void Die()
+    {
+        if (this.IsInGroup("Enemy"))
+        {
             sgbus.EmitSignal("EnemyHasDied"); // emit this to check if room has cleared, room catches this.
             QueueFree();
         }
-
     }
-
 }

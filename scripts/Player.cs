@@ -117,6 +117,9 @@ public partial class Player : CharacterBase
         Bullet bullet = (Bullet)BulletScene.Instantiate();
         bullet.Position = BulletSpawnPoint.GlobalPosition;
         bullet.BulletOwner = this;
+        bullet.dmg = charBaseDmg;
+
+        bullet.Scale = new(charBaseProjSize, charBaseProjSize);
 
         Vector2 Direction = (
             BulletSpot.GlobalPosition - BulletSpawnPoint.GlobalPosition
