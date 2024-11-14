@@ -12,6 +12,8 @@ public partial class Bullet : Area2D
 
     public float dmg;
 
+    public float wallPenChance;
+
     private Timer _timer;
 
     public override void _Process(double delta)
@@ -31,6 +33,16 @@ public partial class Bullet : Area2D
 
     private void _on_body_entered(Node2D node)
     {
+        // check for wall penetration chance
+        if (wallPenChance < 1f)
+        {
+            Random random = new Random();
+            float randomFloat = (float)(random.NextDouble() * 1f);
+            if (randomFloat > wallPenChance)
+            {
+                return;
+            }
+        }
         if (node is not CharacterBase character)
         {
             QueueFree();

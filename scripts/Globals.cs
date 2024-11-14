@@ -16,4 +16,6 @@ public partial class Globals : Node
     public float globalHealthMulti = 1f;
 
     public float globalCharSizeMulti = 1f;
+
+    public float globalWallPenetrationChance = 1f;
 }

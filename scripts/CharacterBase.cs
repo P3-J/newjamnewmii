@@ -12,6 +12,8 @@ public partial class CharacterBase : CharacterBody2D
     public float charBaseProjSize;
     public float charBaseDmg;
 
+    public float wallPenChance;
+
     public float CurrentHp;
     public ProgressBar hpbar;
     public Globals globals;
@@ -22,8 +24,10 @@ public partial class CharacterBase : CharacterBody2D
         globals = GetNode<Globals>("/root/Globals");
         sgbus = GetNode<SignalBus>("/root/SignalBus");
 
+        // Trait apply on init
         charBaseProjSize = globals.globalProjMulti;
         charBaseDmg = globals.globalDamageMulti;
+        wallPenChance = globals.globalWallPenetrationChance;
         Scale = new(globals.globalCharSizeMulti, globals.globalCharSizeMulti);
 
         sgbus.Connect("NewTraitSelected", new Callable(this, nameof(UpdateStats)));
@@ -31,8 +35,11 @@ public partial class CharacterBase : CharacterBody2D
 
     public void UpdateStats()
     {
+        // Trait apply on new trait
         charBaseProjSize = globals.globalProjMulti;
         charBaseDmg = globals.globalDamageMulti;
+        wallPenChance = globals.globalWallPenetrationChance;
+        Scale = new(globals.globalCharSizeMulti, globals.globalCharSizeMulti);
     }
 
     public void TakeDmg(float dmg)

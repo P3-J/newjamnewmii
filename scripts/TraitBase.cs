@@ -9,7 +9,7 @@ public class TraitBase
 
 
     // inc this
-    public static int TraitCount { get; set; } = 4;
+    public static int TraitCount { get; set; } = 5;
 
     public static void ApplyTrait(Globals globals, int TraitNumber)
     {
@@ -30,6 +30,9 @@ public class TraitBase
             case 4:
                 ApplyHpAndCharSizeTrait(globals);
                 break;
+            case 5:
+                ApplyWallPenetrationTrait(globals);
+                break;
         }
     }
 
@@ -45,6 +48,12 @@ public class TraitBase
                 return new string[] { "-20% to Character Size", "Mini-me, Mini-them" };
             case 4:
                 return new string[] { "+15% to HP\n +10% to Character Size", "Yeah, I work out" };
+            case 5:
+                return new string[]
+                {
+                    "+5% chance for bullets to penetrate walls",
+                    "Walls can't stop me! (or them)",
+                };
             default:
                 return new string[] { "error with retrival", "error with retrival" };
         }
@@ -71,5 +80,10 @@ public class TraitBase
     {
         globals.globalCharSizeMulti *= 1.1f;
         globals.globalHealthMulti *= 1.15f;
+    }
+
+    private static void ApplyWallPenetrationTrait(Globals globals)
+    {
+        globals.globalWallPenetrationChance *= 0.95f;
     }
 }
