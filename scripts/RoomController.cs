@@ -19,7 +19,9 @@ public partial class RoomController : Node2D
 		sgbus.Connect("SwitchScene", new Callable(this, nameof(SwitchScene)));
 		sgbus.Connect("EnemyHasDied", new Callable(this, nameof(CheckIfAllEnemiesAreDead)));
 
-		CheckIfAllEnemiesAreDead(); // will not print acc data at the start
+		if (pickup != null) pickup.Visible = false;
+
+		//CheckIfAllEnemiesAreDead(); // will not print acc data at the start
 	}
 
 	public void SwitchScene(){

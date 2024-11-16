@@ -5,9 +5,8 @@ using Godot;
 
 public partial class Player : CharacterBase
 {
-    [Export]
-    public PackedScene BulletScene;
-
+    [Export] public PackedScene BulletScene;
+    [Export] public Playerui playeruicontroller;
     Node2D AimSpotParent;
     Sprite2D GunSprite;
     Marker2D BulletSpot; // where bullet should aim towards
@@ -15,6 +14,8 @@ public partial class Player : CharacterBase
     AnimatedSprite2D PlayerSprites;
     AnimationPlayer WalkingAnimController;
     Node2D GunChildrenBurgerFlipper;
+    AnimationPlayer PlayerGeneralAnims;
+    AudioStreamPlayer GunShotSound;
 
     Camera2D ViewPortCamera; // not real cam just viewport
 
@@ -41,6 +42,10 @@ public partial class Player : CharacterBase
 
         GunChildrenBurgerFlipper = GetNode<Node2D>("aimspotparent/NodeToFlipAllChildren");
         ViewPortCamera = GetViewport().GetCamera2D();
+        PlayerGeneralAnims = GetNode<AnimationPlayer>("animations/AnimationPlayer");
+        GunShotSound = GetNode<AudioStreamPlayer>("sounds/shoot");
+
+        playeruicontroller.HpBarController(CurrentHp, MaxHp);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -134,6 +139,17 @@ public partial class Player : CharacterBase
         bullet.Direction = spreadDirection;
         bullet.LookAt(bullet.Position + spreadDirection);
         GetTree().CurrentScene.AddChild(bullet);
+
+        PlayerGeneralAnims.SpeedScale = 800f / FireRate;
+        PlayerGeneralAnims.Play("shoot");
+        GunShotSound.Play();
+    }
+
+
+    public override void TakeDmg(int dmg)
+    {
+        base.TakeDmg(dmg);
+        playeruicontroller.HpBarController(CurrentHp, MaxHp);
     }
 
     public void aimSpotLookAtParent(Vector2 MousePosition)

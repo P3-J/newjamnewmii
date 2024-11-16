@@ -12,7 +12,7 @@ public partial class Pickup : Node2D
 
 	private void _on_area_2d_body_entered(Node2D body){
 
-		if (body.IsInGroup("Player")){
+		if (body.IsInGroup("Player") && Visible){
 			sgbus.EmitSignal("PlayerOnPickUp");
 			QueueFree();
 		}
