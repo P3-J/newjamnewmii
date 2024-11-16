@@ -110,7 +110,10 @@ public partial class Player : CharacterBase
     public override void _Process(double delta)
     {
         aimSpotLookAtParent(ViewPortCamera.GetGlobalMousePosition());
-        if (Input.IsActionPressed("lmb") && (Time.GetTicksMsec() > LastBulletTime + FireRate))
+        if (
+            Input.IsActionPressed("lmb")
+            && (Time.GetTicksMsec() > LastBulletTime + charBaseFireRate)
+        )
         {
             LastBulletTime = Time.GetTicksMsec();
             ShootBullet();
@@ -123,16 +126,22 @@ public partial class Player : CharacterBase
         bullet.Position = BulletSpawnPoint.GlobalPosition;
         bullet.BulletOwner = this;
 
+        // globals/traits applied here
+        bullet.dmg = charBaseDmg * globals.globalPlayerStatMulti;
+        bullet.Scale = Vector2.One * (charBaseProjSize * globals.globalPlayerStatMulti);
+        bullet.wallPenChance = wallPenChance;
+        bullet.Speed *= charBaseProjSpeed * globals.globalPlayerStatMulti;
+        //
         Vector2 Direction = (
             BulletSpot.GlobalPosition - BulletSpawnPoint.GlobalPosition
         ).Normalized();
 
-        var rand = new Random();
+        Random random = new();
         // 0 - no spread
         // -1 or 1 - spread direction
-        int SpreadDirectionMultiplier = rand.Next(-1, 2);
+        int SpreadDirectionMultiplier = random.Next(-1, 2);
         float SpreadValue = (float)(
-            rand.NextDouble() * BulletSpreadMax * SpreadDirectionMultiplier
+            random.NextDouble() * charBaseSpreadMulti * SpreadDirectionMultiplier
         );
 
         Vector2 spreadDirection = Direction.Rotated(SpreadValue);
