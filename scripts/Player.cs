@@ -22,8 +22,6 @@ public partial class Player : CharacterBase
     public const double BulletSpreadMax = 0.1;
 
     // In milliseconds
-    public const int FireRate = 800;
-
     public ulong LastBulletTime = 0;
 
     public override void _Ready()
@@ -127,7 +125,7 @@ public partial class Player : CharacterBase
         bullet.BulletOwner = this;
 
         // globals/traits applied here
-        bullet.dmg = charBaseDmg * globals.globalPlayerStatMulti;
+        bullet.dmg = charBaseDmg + globals.extraDamage;
         bullet.Scale = Vector2.One * (charBaseProjSize * globals.globalPlayerStatMulti);
         bullet.wallPenChance = wallPenChance;
         bullet.Speed *= charBaseProjSpeed * globals.globalPlayerStatMulti;
@@ -149,7 +147,7 @@ public partial class Player : CharacterBase
         bullet.LookAt(bullet.Position + spreadDirection);
         GetTree().CurrentScene.AddChild(bullet);
 
-        PlayerGeneralAnims.SpeedScale = 800f / FireRate;
+        PlayerGeneralAnims.SpeedScale = 800f / charBaseFireRate;
         PlayerGeneralAnims.Play("shoot");
         GunShotSound.Play();
     }

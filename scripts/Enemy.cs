@@ -23,12 +23,13 @@ public partial class Enemy : CharacterBase
     Area2D blowuparea;
 
   
-    public enum EnemyType{
+    public enum EnemyType
+    {       
         c4,
         makaron
     }
 
-    public int AggroRange; // controls the raycast range for aggro
+    [Export] int AggroRange = 250; // controls the raycast range for aggro
 
     private bool HeadingForEndPos = true;
 
@@ -53,6 +54,8 @@ public partial class Enemy : CharacterBase
         hpbar.MaxValue = MaxHp;
         hpbar.Value = MaxHp;
         CurrentHp = MaxHp;
+
+        aggroray.TargetPosition = new(AggroRange, 0);
 
         SetEnemyTypeSprite();
         SetScannersBasedOnType();
@@ -106,6 +109,7 @@ public partial class Enemy : CharacterBase
 
     private void _on_rescan_timeout(){
         shootProjectileAt(GetPlayerPos());
+        rescantimer.WaitTime = globals.globalFireRate / 800f;
         canMove = true;
     }
 
@@ -114,13 +118,14 @@ public partial class Enemy : CharacterBase
     {
         base.TakeDmg(dmg);
         hpbar.Value = CurrentHp;
+        GD.Print("Enemy took: ",dmg, " dmg");
     }
 
     public void _on_blowuparea_body_entered(Node2D area){
         if (area.IsInGroup("Player")){
             // could put a timer here so they stop and then blow but ok
             // blow up
-            globals.player.TakeDmg(5);
+            globals.player.TakeDmg(globals.extraDamage + charBaseDmg);
             QueueFree();
         }
     }
@@ -178,12 +183,6 @@ public partial class Enemy : CharacterBase
             enemySprite.FlipH = GlobalPosition.X < GetPlayerPos().X;
             MobActionBasedOnType();
         }
-    }
-
-
-    public void _on_blowuparea_body_entered(){
-
-
     }
 
 

@@ -10,7 +10,7 @@ public partial class Bullet : Area2D
 
     public Node BulletOwner;
 
-    public float dmg;
+    public int dmg;
 
     public float wallPenChance;
 

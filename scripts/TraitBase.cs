@@ -76,13 +76,13 @@ public class TraitBase
     private static void ApplyProjSizeTrait(Globals globals)
     {
         globals.globalProjSizeMulti *= 1.25f;
-        globals.globalDamageMulti *= 0.9f;
+        globals.extraDamage += 1;
     }
 
     private static void ApplyDmgTrait(Globals globals)
     {
         globals.globalHealthMulti *= 0.925f;
-        globals.globalDamageMulti *= 1.15f;
+        globals.extraDamage += 2;
     }
 
     private static void ApplyCharSizeTrait(Globals globals)
@@ -104,13 +104,13 @@ public class TraitBase
     private static void ApplyProjSpeedTrait(Globals globals)
     {
         globals.globalProjSpeedMulti *= 1.15f;
-        globals.globalDamageMulti *= 0.95f;
+        globals.extraDamage += 1;
     }
 
     private static void ApplyFireRateTrait(Globals globals)
     {
         // firerate = time between bullets
-        globals.globalFireRateMulti *= 0.80f;
+        globals.globalFireRate -= 200f;
         globals.globalSpreadMulti *= 1.15f;
     }
 }

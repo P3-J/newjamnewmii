@@ -9,13 +9,13 @@ public partial class Globals : Node
 
     public List<int> ActiveTraits = new();
 
-    public float globalPlayerStatMulti = 1f;
+    public int extraDamage = 0;
 
     public float globalEnemyStatMulti = 0.8f;
 
     public float globalProjSizeMulti = 1f;
 
-    public float globalDamageMulti = 1f;
+    public int globalDamageMulti = 1;
 
     public float globalHealthMulti = 1f;
 
@@ -25,8 +25,10 @@ public partial class Globals : Node
 
     public float globalProjSpeedMulti = 1f;
 
+    public float globalPlayerStatMulti = 1f;
+
     // Delay between bullets in milliseconds
-    public float globalFireRateMulti = 50f;
+    public float globalFireRate = 800f;
 
     // Used for bullet.Direction.Rotated()
     public float globalSpreadMulti = 0.15f;

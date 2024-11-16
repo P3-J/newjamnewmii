@@ -8,7 +8,7 @@ public partial class CharacterBase : CharacterBody2D
     [Export] AudioStreamPlayer hitsound;
     public int CurrentHp;
     public float charBaseProjSize;
-    public float charBaseDmg;
+    public int charBaseDmg;
 
     public float charBaseSize;
 
@@ -47,7 +47,7 @@ public partial class CharacterBase : CharacterBody2D
 
         charBaseProjSpeed = globals.globalProjSpeedMulti;
 
-        charBaseFireRate = globals.globalFireRateMulti;
+        charBaseFireRate = globals.globalFireRate;
 
         charBaseSpreadMulti = globals.globalSpreadMulti;
 
