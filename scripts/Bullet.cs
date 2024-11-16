@@ -10,7 +10,7 @@ public partial class Bullet : Area2D
 
     public Node BulletOwner;
 
-    public float dmg;
+    public int dmg;
 
     public float wallPenChance;
 
@@ -56,7 +56,12 @@ public partial class Bullet : Area2D
             || BulletOwner.IsInGroup("Enemy") && area.IsInGroup("Player")
         )
         {
-            area.GetParent<CharacterBase>().TakeDmg(dmg: dmg);
+            GD.Print(area.GetParent().Name);
+
+            CharacterBase parent = area.GetParent<CharacterBase>();
+            GD.Print(parent);
+            parent.TakeDmg(dmg: dmg);
+
             QueueFree();
         }
     }

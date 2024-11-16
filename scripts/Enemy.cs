@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using Godot;
 
 public partial class Enemy : CharacterBase
 {
     [Export] public EnemyType enemytypeselection {get; set;}
     [Export] public Marker2D PatrolPathStart {get; set;}
+
+    [Export] public PackedScene BulletScene;
     
     Marker2D PatrolPathEnd;
     NavigationAgent2D NavAgent;
@@ -13,18 +16,27 @@ public partial class Enemy : CharacterBase
     RayCast2D aggroray;
     Node2D rayparent;
 
+    Timer rescantimer;
+    Timer pathfindtimer;
+
+    Vector2 globalShootPos;
+    Area2D blowuparea;
+
   
-    public enum EnemyType{
+    public enum EnemyType
+    {       
         c4,
         makaron
     }
 
-    public int AggroRange; // controls the raycast range for aggro
+    [Export] int AggroRange = 250; // controls the raycast range for aggro
 
     private bool HeadingForEndPos = true;
 
     public enum EnemyState { patrol, aggro, afk }
     public EnemyState CurrentState {get; set;}
+
+    public ProgressBar hpbar;
 
     public override void _Ready()
     {
@@ -35,33 +47,43 @@ public partial class Enemy : CharacterBase
         aggroray = GetNode<RayCast2D>("rayparent/aggroray");
         rayparent = GetNode<Node2D>("rayparent");
         enemySprite = GetNode<AnimatedSprite2D>("enemysprite");
+        pathfindtimer = GetNode<Timer>("timers/pathfind");
+        rescantimer = GetNode<Timer>("timers/rescan");
+        blowuparea = GetNode<Area2D>("blowuparea");
         
         hpbar.MaxValue = MaxHp;
         hpbar.Value = MaxHp;
         CurrentHp = MaxHp;
 
+        aggroray.TargetPosition = new(AggroRange, 0);
+
         SetEnemyTypeSprite();
+        SetScannersBasedOnType();
 
         if (PatrolPathStart != null){
             PatrolPathEnd = PatrolPathStart.GetChild<Marker2D>(0); // super bad practice, just ez for this
             CurrentState = EnemyState.patrol;
             NavAgent.TargetPosition = PatrolPathStart.GlobalPosition; // initial go to patrol path
         } else {
-            CurrentState = EnemyState.aggro;
-            NavAgent.TargetPosition = GetPlayerPos();
+            CurrentState = EnemyState.afk;
         }
     
     }
+
+    private void SetScannersBasedOnType()
+    {
+        if (enemytypeselection == EnemyType.makaron){
+            blowuparea.Visible = false;
+        }
+    }
+
 
     public override void _Process(double delta)
     {
         RayLookAtPlayerAndProcAggro();
 
+        if (!canMove) return;
   
-        if (CurrentState == EnemyState.aggro){
-            NavAgent.TargetPosition = GetPlayerPos();
-        }
-        
         if (!NavAgent.IsNavigationFinished())
         {
             Vector2 nextPoint = NavAgent.GetNextPathPosition();
@@ -85,6 +107,59 @@ public partial class Enemy : CharacterBase
         }
     }
 
+    private void _on_rescan_timeout(){
+        shootProjectileAt(GetPlayerPos());
+        rescantimer.WaitTime = globals.globalFireRate / 800f;
+        canMove = true;
+    }
+
+
+    public override void TakeDmg(int dmg)
+    {
+        base.TakeDmg(dmg);
+        hpbar.Value = CurrentHp;
+        GD.Print("Enemy took: ",dmg, " dmg");
+    }
+
+    public void _on_blowuparea_body_entered(Node2D area){
+        if (area.IsInGroup("Player")){
+            // could put a timer here so they stop and then blow but ok
+            // blow up
+            globals.player.TakeDmg(globals.extraDamage + charBaseDmg);
+            QueueFree();
+        }
+    }
+
+
+    private void shootProjectileAt(Vector2 pos){
+
+        Bullet bullet = (Bullet)BulletScene.Instantiate();
+        bullet.Position = GlobalPosition;
+        bullet.BulletOwner = this;
+
+        Vector2 Direction = (
+            pos - GlobalPosition 
+        ).Normalized();
+
+        var rand = new Random();
+        int SpreadDirectionMultiplier = rand.Next(-1, 2);
+        float SpreadValue = (float)(
+            rand.NextDouble() * 0.01 * SpreadDirectionMultiplier
+        );
+
+        Vector2 spreadDirection = Direction.Rotated(SpreadValue);
+        bullet.Direction = spreadDirection;
+        bullet.LookAt(bullet.Position + spreadDirection);
+        GetTree().CurrentScene.AddChild(bullet);
+  
+    }
+
+    private void _on_pathfind_timeout(){
+        if (CurrentState == EnemyState.aggro){
+            NavAgent.TargetPosition = GetPlayerPos();
+        }
+    }
+
     private void SetEnemyTypeSprite(){
         switch (enemytypeselection){
             case EnemyType.c4:
@@ -103,7 +178,27 @@ public partial class Enemy : CharacterBase
         Node collider = (Node)aggroray.GetCollider();
 
         if (collider == null) {return;}
-        if (collider.IsInGroup("Player")) {CurrentState = EnemyState.aggro;}
+        if (collider.IsInGroup("Player")) {
+            CurrentState = EnemyState.aggro;
+            enemySprite.FlipH = GlobalPosition.X < GetPlayerPos().X;
+            MobActionBasedOnType();
+        }
+    }
+
+
+    private void MobActionBasedOnType(){
+        if (enemytypeselection == EnemyType.c4){
+            NavAgent.TargetPosition = GetPlayerPos();
+            return;
+        }
+
+        if (enemytypeselection == EnemyType.makaron){
+            canMove = false;
+            if (rescantimer.IsStopped()){
+                globalShootPos = GetPlayerPos(); // refresh shoot pos coolio
+                rescantimer.Start();
+            }
+        }
 
     }
 

@@ -1,11 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://dxhxix5mq7m6h"]
+[gd_scene load_steps=12 format=3 uid="uid://dxhxix5mq7m6h"]
 
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_72sam"]
+[ext_resource type="PackedScene" uid="uid://dqck1anxqdc2h" path="res://scenes/bullet.tscn" id="2_6bfj7"]
 [ext_resource type="Texture2D" uid="uid://cbmaw0qlcrgya" path="res://textures/char/makaron.png" id="2_xpxu6"]
 [ext_resource type="Texture2D" uid="uid://dw16tq61tjjbm" path="res://textures/char/tseeeneli.png" id="3_r26cc"]
+[ext_resource type="AudioStream" uid="uid://bxafk6tm7s6t8" path="res://sounds/hitHurt.wav" id="5_ng7gw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_237eb"]
 radius = 8.0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ry2gy"]
+grow_begin = 0.0
+grow_end = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r7l2o"]
+bg_color = Color(0.572988, 0.0506623, 0.240614, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ejey4"]
 animations = [{
@@ -29,22 +38,32 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_75o21"]
 size = Vector2(32, 52)
 
-[node name="enemy" type="CharacterBody2D" groups=["Enemy"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ema6w"]
+radius = 40.1995
+
+[node name="enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitsound") groups=["Enemy"]]
 y_sort_enabled = true
+collision_layer = 5
+collision_mask = 5
 floor_block_on_wall = false
 floor_max_angle = 0.0
 script = ExtResource("1_72sam")
+BulletScene = ExtResource("2_6bfj7")
 Speed = 50.0
+hitsound = NodePath("hitsound")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 24)
 shape = SubResource("CircleShape2D_237eb")
 
 [node name="hp" type="ProgressBar" parent="."]
+modulate = Color(1, 1, 1, 0.72549)
 offset_left = -24.0
-offset_top = -36.0
+offset_top = -24.0
 offset_right = 28.0
-offset_bottom = -32.0
+offset_bottom = -20.0
+theme_override_styles/background = SubResource("StyleBoxLine_ry2gy")
+theme_override_styles/fill = SubResource("StyleBoxFlat_r7l2o")
 max_value = 10.0
 show_percentage = false
 
@@ -58,6 +77,8 @@ debug_path_custom_line_width = 3.88
 
 [node name="aggroray" type="RayCast2D" parent="rayparent"]
 target_position = Vector2(250, 0)
+collision_mask = 2
+collide_with_areas = true
 
 [node name="enemysprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -67,6 +88,30 @@ animation = &"tseneli"
 
 [node name="enemyhitbox" type="Area2D" parent="." groups=["Enemy"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyhitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyhitbox" groups=["Enemy"]]
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_75o21")
+
+[node name="timers" type="Node" parent="."]
+
+[node name="rescan" type="Timer" parent="timers"]
+one_shot = true
+
+[node name="pathfind" type="Timer" parent="timers"]
+wait_time = 2.0
+autostart = true
+
+[node name="blowuparea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="blowuparea"]
+position = Vector2(0, 8)
+shape = SubResource("CircleShape2D_ema6w")
+
+[node name="hitsound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ng7gw")
+volume_db = -7.31
+pitch_scale = 1.94
+
+[connection signal="timeout" from="timers/rescan" to="." method="_on_rescan_timeout"]
+[connection signal="timeout" from="timers/pathfind" to="." method="_on_pathfind_timeout"]
+[connection signal="body_entered" from="blowuparea" to="." method="_on_blowuparea_body_entered"]

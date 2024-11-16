@@ -19,17 +19,15 @@ public partial class RoomController : Node2D
 		sgbus.Connect("SwitchScene", new Callable(this, nameof(SwitchScene)));
 		sgbus.Connect("EnemyHasDied", new Callable(this, nameof(CheckIfAllEnemiesAreDead)));
 
-		CheckIfAllEnemiesAreDead(); // will not print acc data at the start
+		if (pickup != null) pickup.Visible = false;
+
+		//CheckIfAllEnemiesAreDead(); // will not print acc data at the start
 	}
 
 	public void SwitchScene(){
-		switch (globals.currentFloor + 1){
-
-			case 2:
-				globals.currentFloor++;
-				GetTree().ChangeSceneToFile("res://scenes/levels/room_2.tscn");
-				break;
-		}
+		globals.currentFloor++;
+		string roomFile = "res://scenes/levels/room_" + globals.currentFloor.ToString() + ".tscn";
+		GetTree().ChangeSceneToFile(roomFile);
 	}
 
 	private void CheckIfAllEnemiesAreDead(){

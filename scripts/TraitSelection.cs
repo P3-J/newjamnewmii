@@ -47,6 +47,7 @@ public partial class TraitSelection : Control
 
         GetTree().Paused = true;
         VisiblityParent.Visible = true;
+        
     }
 
     private void GenerateTraitCards()
@@ -89,6 +90,7 @@ public partial class TraitSelection : Control
             GD.Print("currently active traits:", string.Join(", ", globals.ActiveTraits));
 
             sgbus.EmitSignal("NewTraitSelected");
+            globals.player.UpdateStats();
         }
     }
 }

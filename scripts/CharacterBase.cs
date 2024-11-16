@@ -3,14 +3,12 @@ using Godot;
 
 public partial class CharacterBase : CharacterBody2D
 {
-    [Export]
-    public float MaxHp = 10;
-
-    [Export]
-    public float Speed = 200.0f;
-
+    [Export] public int MaxHp = 10;
+    [Export] public float Speed = 200.0f;
+    [Export] AudioStreamPlayer hitsound;
+    public int CurrentHp;
     public float charBaseProjSize;
-    public float charBaseDmg;
+    public int charBaseDmg;
 
     public float charBaseSize;
 
@@ -21,21 +19,20 @@ public partial class CharacterBase : CharacterBody2D
     public float charBaseSpreadMulti;
 
     public float wallPenChance;
-
-    public float CurrentHp;
     public ProgressBar hpbar;
     public Globals globals;
     public SignalBus sgbus;
+    public bool canMove = true;
 
     public override void _Ready()
     {
         globals = GetNode<Globals>("/root/Globals");
         sgbus = GetNode<SignalBus>("/root/SignalBus");
 
-        // Trait apply on init
-        UpdateStats();
 
-        // Trait apply on new trait signal
+        CurrentHp = MaxHp; // holyC
+        UpdateStats();
+        // Traitply on new trait signal
         sgbus.Connect("NewTraitSelected", new Callable(this, nameof(UpdateStats)));
     }
 
@@ -50,24 +47,28 @@ public partial class CharacterBase : CharacterBody2D
 
         charBaseProjSpeed = globals.globalProjSpeedMulti;
 
-        charBaseFireRate = globals.globalFireRateMulti;
+        charBaseFireRate = globals.globalFireRate;
 
         charBaseSpreadMulti = globals.globalSpreadMulti;
 
         wallPenChance = globals.globalWallPenetrationChance;
 
-        MaxHp *= globals.globalHealthMulti;
+        MaxHp =(int)Math.Round(MaxHp - globals.globalHealthMulti);
     }
 
-    public void TakeDmg(float dmg)
+    public virtual void TakeDmg(int dmg)
     {
         CurrentHp -= dmg;
-        hpbar.Value = CurrentHp;
+        if (hitsound != null){
+            hitsound.Play();
+        }
 
         if (CurrentHp <= 0)
         {
             Die();
         }
+
+        
     }
 
     public void Die()
