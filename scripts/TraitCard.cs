@@ -1,58 +1,66 @@
-using Godot;
 using System;
+using Godot;
 
-public partial class TraitCard : ColorRect
+public partial class TraitCard : Panel
 {
-	Sprite2D Icon;
-	RichTextLabel Name;
-	RichTextLabel Effect;
-	ColorRect HoverIndicator;
-	private bool Highlighted = false;
-	public int TraitNumber;
-	public SignalBus sgbus;
+    Sprite2D Icon;
+    RichTextLabel traitName;
+    RichTextLabel Effect;
+    private bool Highlighted = false;
+    public int TraitNumber;
+    public SignalBus sgbus;
 
-	[Signal] public delegate void CurrentlySelectedCardEventHandler(); 
+    [Signal]
+    public delegate void CurrentlySelectedCardEventHandler();
 
-	public override void _Ready()
-	{
-		sgbus = GetNode<SignalBus>("/root/SignalBus");
-		Icon = GetNode<Sprite2D>("icon");
-		Name = GetNode<RichTextLabel>("name");
-		Effect = GetNode<RichTextLabel>("effect");
-		HoverIndicator = GetNode<ColorRect>("hoverindicator");
+    public override void _Ready()
+    {
+        sgbus = GetNode<SignalBus>("/root/SignalBus");
+        Icon = GetNode<Sprite2D>("icon");
+        traitName = GetNode<RichTextLabel>("name");
+        Effect = GetNode<RichTextLabel>("text");
 
-		sgbus.Connect("UnHighlightOtherCards", new Callable(this, nameof(Unhighlight)));
-	}
+        sgbus.Connect("UnHighlightOtherCards", new Callable(this, nameof(Unhighlight)));
+    }
 
     public override void _Input(InputEvent @event)
     {
-        if (Input.IsActionJustPressed("lmb") && Highlighted){
-			HoverIndicator.Visible = true;
-			sgbus.EmitSignal("UnHighlightOtherCards", this);
-			EmitSignal("CurrentlySelectedCard", this);
-		}
+        if (Input.IsActionJustPressed("lmb") && Highlighted)
+        {
+            sgbus.EmitSignal("UnHighlightOtherCards", this);
+            EmitSignal("CurrentlySelectedCard", this);
+        }
     }
 
-	public void Unhighlight(TraitCard card){
-		if (card != this){
-			HoverIndicator.Visible = false;
-		}
-	}
+    public void Unhighlight(TraitCard card)
+    {
+        if (card != this)
+        {
+            SelfModulate = Colors.White;
+        }
+        else
+        {
+            SelfModulate = Colors.Gold;
+        }
+    }
 
-    public void SetTraitCardToBe(int traitNumber){
-		string[] info = Traits.GetTraitDescAndName(traitNumber);
-		Effect.Text = info[0];
-		Name.Text = info[1];
-		TraitNumber = traitNumber;
-	}
+    public void SetTraitCardToBe(int traitNumber)
+    {
+        string[] info = TraitBase.GetTraitDescAndName(traitNumber);
+        Effect.Text = info[0];
+        traitName.Text = info[1];
+        TraitNumber = traitNumber;
+    }
 
-	public void _on_mouse_entered(){
-		Highlighted = true;
-	}
+    public void _on_mouse_entered()
+    {
+        Modulate = Colors.Gray;
+        Highlighted = true;
+    }
 
-	public void _on_mouse_exited(){
-		Highlighted = false;
-	}
-
-
+    public void _on_mouse_exited()
+    {
+        Modulate = Colors.White;
+        Highlighted = false;
+    }
 }
