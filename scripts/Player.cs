@@ -21,7 +21,7 @@ public partial class Player : CharacterBase
     public const double BulletSpreadMax = 0.1;
 
     // In milliseconds
-    public const int FireRate = 50;
+    public const int FireRate = 800;
 
     public ulong LastBulletTime = 0;
 

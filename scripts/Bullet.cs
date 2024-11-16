@@ -38,7 +38,12 @@ public partial class Bullet : Area2D
 
         if (BulletOwner.IsInGroup("Player") && area.IsInGroup("Enemy") || BulletOwner.IsInGroup("Enemy") && area.IsInGroup("Player"))
         {
-            area.GetParent<CharacterBase>().TakeDmg(dmg: dmg);
+            GD.Print(area.GetParent().Name);
+
+            CharacterBase parent = area.GetParent<CharacterBase>();
+            GD.Print(parent);
+            parent.TakeDmg(dmg: dmg);
+
             QueueFree();
         }
 

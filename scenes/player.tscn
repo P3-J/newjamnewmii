@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://of5b0s8j2tsu"]
+[gd_scene load_steps=17 format=3 uid="uid://of5b0s8j2tsu"]
 
 [ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_c13ed"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_rfdtd"]
@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dkbt0ss44t3at" path="res://scenes/trait_selection.tscn" id="8_oqc5n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xx8r0"]
-size = Vector2(32, 16)
+size = Vector2(32, 12)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ln4vc"]
 animations = [{
@@ -161,13 +161,18 @@ _data = {
 "walkupdown": SubResource("Animation_5ssde")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5pu6x"]
+size = Vector2(36, 66)
+
 [node name="player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_rfdtd")
 BulletScene = ExtResource("2_n4q7m")
 
 [node name="playerCollision" type="CollisionShape2D" parent="."]
-position = Vector2(-2, 24)
+position = Vector2(-2, 26)
 shape = SubResource("RectangleShape2D_xx8r0")
 
 [node name="aimspotparent" type="Node2D" parent="."]
@@ -219,3 +224,11 @@ libraries = {
 autoplay = "walkleft"
 
 [node name="TraitSelection" parent="." instance=ExtResource("8_oqc5n")]
+
+[node name="hitboxparent" type="Area2D" parent="." groups=["Player"]]
+collision_layer = 3
+collision_mask = 3
+
+[node name="hitbox" type="CollisionShape2D" parent="hitboxparent" groups=["Player"]]
+position = Vector2(-2, 1)
+shape = SubResource("RectangleShape2D_5pu6x")

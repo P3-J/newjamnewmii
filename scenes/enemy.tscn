@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dxhxix5mq7m6h"]
+[gd_scene load_steps=9 format=3 uid="uid://dxhxix5mq7m6h"]
 
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_72sam"]
+[ext_resource type="PackedScene" uid="uid://dqck1anxqdc2h" path="res://scenes/bullet.tscn" id="2_6bfj7"]
 [ext_resource type="Texture2D" uid="uid://cbmaw0qlcrgya" path="res://textures/char/makaron.png" id="2_xpxu6"]
 [ext_resource type="Texture2D" uid="uid://dw16tq61tjjbm" path="res://textures/char/tseeeneli.png" id="3_r26cc"]
 
@@ -29,11 +30,15 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_75o21"]
 size = Vector2(32, 52)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ema6w"]
+radius = 40.1995
+
 [node name="enemy" type="CharacterBody2D" groups=["Enemy"]]
 y_sort_enabled = true
 floor_block_on_wall = false
 floor_max_angle = 0.0
 script = ExtResource("1_72sam")
+BulletScene = ExtResource("2_6bfj7")
 Speed = 50.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -50,6 +55,7 @@ show_percentage = false
 
 [node name="navagent" type="NavigationAgent2D" parent="."]
 navigation_layers = 3
+debug_enabled = true
 debug_path_custom_color = Color(0.877024, 0.0585291, 0.034255, 1)
 debug_path_custom_point_size = 5.45
 debug_path_custom_line_width = 3.88
@@ -58,6 +64,8 @@ debug_path_custom_line_width = 3.88
 
 [node name="aggroray" type="RayCast2D" parent="rayparent"]
 target_position = Vector2(250, 0)
+collision_mask = 2
+collide_with_areas = true
 
 [node name="enemysprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -67,6 +75,25 @@ animation = &"tseneli"
 
 [node name="enemyhitbox" type="Area2D" parent="." groups=["Enemy"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyhitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyhitbox" groups=["Enemy"]]
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_75o21")
+
+[node name="timers" type="Node" parent="."]
+
+[node name="rescan" type="Timer" parent="timers"]
+one_shot = true
+
+[node name="pathfind" type="Timer" parent="timers"]
+wait_time = 2.0
+autostart = true
+
+[node name="blowuparea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="blowuparea"]
+position = Vector2(0, 8)
+shape = SubResource("CircleShape2D_ema6w")
+
+[connection signal="timeout" from="timers/rescan" to="." method="_on_rescan_timeout"]
+[connection signal="timeout" from="timers/pathfind" to="." method="_on_pathfind_timeout"]
+[connection signal="body_entered" from="blowuparea" to="." method="_on_blowuparea_body_entered"]

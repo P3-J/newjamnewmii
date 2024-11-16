@@ -9,9 +9,10 @@ public partial class CharacterBase : CharacterBody2D
     [Export]
     public float Speed = 200.0f;
     public int CurrentHp;
-    public ProgressBar hpbar;
     public Globals globals;
     public SignalBus sgbus;
+
+    public bool canMove = true;
 
     public override void _Ready()
     {
@@ -20,10 +21,9 @@ public partial class CharacterBase : CharacterBody2D
 
     }
 
-    public void TakeDmg(int dmg)
+    public virtual void TakeDmg(int dmg)
     {
         CurrentHp -= dmg;
-        hpbar.Value = CurrentHp;
 
         if (CurrentHp <= 0)
         {
