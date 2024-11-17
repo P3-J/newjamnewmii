@@ -51,6 +51,7 @@ public partial class Player : CharacterBase
         explosionsprite = GetNode<Sprite2D>("deathnode/explosion");
 
         playeruicontroller.HpBarController(CurrentHp, MaxHp);
+        GD.Print(CurrentHp, MaxHp);
     }
 
     public override void _PhysicsProcess(double delta)
