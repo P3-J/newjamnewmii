@@ -156,6 +156,7 @@ public partial class Player : CharacterBase
     public override void TakeDmg(int dmg)
     {
         base.TakeDmg(dmg);
+        GD.Print("player took dmg");
         playeruicontroller.HpBarController(CurrentHp, MaxHp);
     }
 

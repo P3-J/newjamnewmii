@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://of5b0s8j2tsu"]
+[gd_scene load_steps=26 format=3 uid="uid://of5b0s8j2tsu"]
 
 [ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_c13ed"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_rfdtd"]
@@ -15,6 +15,29 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xx8r0"]
 size = Vector2(32, 12)
+
+[sub_resource type="Shader" id="Shader_xtjsd"]
+code = "shader_type canvas_item;
+
+uniform bool active = false;
+uniform vec4 tint : source_color = vec4(1., 1., 0., 1);
+
+void fragment() {
+	vec4 tint_copy = tint;
+	vec4 previous_color = texture(TEXTURE, UV);
+	
+	if (active == true)
+	{
+		tint_copy.a = previous_color.a;
+		COLOR = tint_copy;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v5xlj"]
+resource_local_to_scene = true
+shader = SubResource("Shader_xtjsd")
+shader_parameter/active = false
+shader_parameter/tint = Color(1, 0.0862745, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ln4vc"]
 animations = [{
@@ -253,7 +276,7 @@ _data = {
 "shoot": SubResource("Animation_f5dts")
 }
 
-[node name="player" type="CharacterBody2D" node_paths=PackedStringArray("playeruicontroller", "hitsound") groups=["Player"]]
+[node name="player" type="CharacterBody2D" node_paths=PackedStringArray("playeruicontroller", "hitsound", "baseSprite") groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 7
 collision_mask = 7
@@ -262,6 +285,7 @@ BulletScene = ExtResource("2_n4q7m")
 playeruicontroller = NodePath("playerui")
 MaxHp = 5
 hitsound = NodePath("sounds/hitsound")
+baseSprite = NodePath("sprite")
 
 [node name="playerCollision" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 26)
@@ -298,6 +322,7 @@ texture = ExtResource("4_v7egp")
 z_index = 1
 y_sort_enabled = true
 texture_filter = 1
+material = SubResource("ShaderMaterial_v5xlj")
 position = Vector2(-2, -8)
 scale = Vector2(1.625, 1.5)
 sprite_frames = SubResource("SpriteFrames_ln4vc")

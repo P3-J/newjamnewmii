@@ -47,13 +47,13 @@ public class TraitBase
         switch (TraitNumber)
         {
             case 1:
-                return new string[] { "+25% to Projectile Size\n-10% to Damage", "Size matters" };
+                return new string[] { "+25% to Projectile Size\n+1 extra damage", "Size matters" };
             case 2:
-                return new string[] { "+15% to Damage\n-7.5% to HP", "RAGE" };
+                return new string[] { "+2 to Damage\n+2 to HP", "RAGE" };
             case 3:
                 return new string[] { "-20% to Character Size", "Mini-me, Mini-them" };
             case 4:
-                return new string[] { "+15% to HP\n +10% to Character Size", "Yeah, I work out" };
+                return new string[] { "+2 to HP\n +10% to Character Size", "Yeah, I work out" };
             case 5:
                 return new string[]
                 {
@@ -63,7 +63,7 @@ public class TraitBase
             case 6:
                 return new string[]
                 {
-                    "+15% to Projectile Speed\n-5% to Damage",
+                    "+15% to Projectile Speed\n+1 to Damage",
                     "Fast...but not furious",
                 };
             case 7:
@@ -81,7 +81,7 @@ public class TraitBase
 
     private static void ApplyDmgTrait(Globals globals)
     {
-        globals.globalHealthMulti *= 0.925f;
+        globals.extraHealth += 2;
         globals.extraDamage += 2;
     }
 
@@ -93,7 +93,7 @@ public class TraitBase
     private static void ApplyHpAndCharSizeTrait(Globals globals)
     {
         globals.globalCharSizeMulti *= 1.1f;
-        globals.globalHealthMulti *= 1.15f;
+        globals.extraHealth += 2;
     }
 
     private static void ApplyWallPenetrationTrait(Globals globals)

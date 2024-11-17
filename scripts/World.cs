@@ -26,3 +26,4 @@ public partial class World : Node2D
         cointext.Text = "Coins: " + CoinCount; // crazy int ja string on fine lmaoo (js looking at you)
     }
 }
+

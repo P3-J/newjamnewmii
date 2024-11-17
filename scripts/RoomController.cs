@@ -27,7 +27,7 @@ public partial class RoomController : Node2D
 	public void SwitchScene(){
 		globals.currentFloor++;
 		string roomFile = "res://scenes/levels/room_" + globals.currentFloor.ToString() + ".tscn";
-		GetTree().ChangeSceneToFile(roomFile);
+		GetTree().ChangeSceneToFile(roomFile); 
 	}
 
 	private void CheckIfAllEnemiesAreDead(){
