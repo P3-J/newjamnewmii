@@ -5,17 +5,18 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_831jn"]
 bg_color = Color(0.0338533, 0.0338533, 0.0338532, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
 border_color = Color(0.912289, 0.912289, 0.912289, 1)
+border_blend = true
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 shadow_color = Color(1, 1, 1, 0.6)
-shadow_size = 3
+shadow_size = 5
 
 [node name="TraitCard" type="Panel"]
 offset_right = 178.0
