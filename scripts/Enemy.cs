@@ -37,7 +37,7 @@ public partial class Enemy : CharacterBase
     }
 
     [Export]
-    int AggroRange = 250; // controls the raycast range for aggro
+    int AggroRange = 1000; // controls the raycast range for aggro
 
     private bool HeadingForEndPos = true;
 
@@ -198,7 +198,8 @@ public partial class Enemy : CharacterBase
         {
             NavAgent.TargetPosition = GetPlayerPos();
         }
-        if (enemytypeselection == EnemyType.c4 && !canMove){
+        if (enemytypeselection == EnemyType.c4 && !canMove)
+        {
             Die();
         }
     }

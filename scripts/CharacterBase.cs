@@ -103,8 +103,9 @@ public partial class CharacterBase : CharacterBody2D
         AddChild(hitTimer);
     }
 
-    private void TurnHitFlashOff(){
-       baseSprite.Material.Set("shader_parameter/active", false); 
+    private void TurnHitFlashOff()
+    {
+        baseSprite.Material.Set("shader_parameter/active", false);
     }
 
     public virtual void Die()
