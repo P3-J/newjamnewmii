@@ -8,10 +8,11 @@ public partial class Enemy : CharacterBase
     [Export] public Marker2D PatrolPathStart {get; set;}
 
     [Export] public PackedScene BulletScene;
-    
+    [Export] public AnimationPlayer WalkAnimPlayer;
     Marker2D PatrolPathEnd;
     NavigationAgent2D NavAgent;
     AnimatedSprite2D enemySprite;
+    AudioStreamPlayer explosionsound;
     
     RayCast2D aggroray;
     Node2D rayparent;
@@ -21,6 +22,7 @@ public partial class Enemy : CharacterBase
 
     Vector2 globalShootPos;
     Area2D blowuparea;
+    Sprite2D explosionSprite;
 
   
     public enum EnemyType
@@ -50,6 +52,8 @@ public partial class Enemy : CharacterBase
         pathfindtimer = GetNode<Timer>("timers/pathfind");
         rescantimer = GetNode<Timer>("timers/rescan");
         blowuparea = GetNode<Area2D>("blowuparea");
+        explosionSprite = GetNode<Sprite2D>("blowuparea/explosion");
+        explosionsound = GetNode<AudioStreamPlayer>("blowuparea/explosionsound");
         
         hpbar.MaxValue = MaxHp;
         hpbar.Value = MaxHp;
@@ -83,9 +87,14 @@ public partial class Enemy : CharacterBase
         RayLookAtPlayerAndProcAggro();
 
         if (!canMove) return;
+
+        if (CurrentState == EnemyState.afk){
+            WalkAnimPlayer.Play("RESET");
+        }
   
         if (!NavAgent.IsNavigationFinished())
         {
+            WalkAnimPlayer.Play("wlak");
             Vector2 nextPoint = NavAgent.GetNextPathPosition();
             Vector2 direction = (nextPoint - GlobalPosition).Normalized();
             Velocity = direction * Speed;
@@ -95,6 +104,7 @@ public partial class Enemy : CharacterBase
         }
         else
         {
+            WalkAnimPlayer.Play("RESET");
             Velocity = Vector2.Zero;
             HeadingForEndPos = !HeadingForEndPos;
             if (CurrentState == EnemyState.patrol){
@@ -125,8 +135,10 @@ public partial class Enemy : CharacterBase
         if (area.IsInGroup("Player")){
             // could put a timer here so they stop and then blow but ok
             // blow up
+            explosionsound.Play();
+            explosionSprite.Visible = true;
             globals.player.TakeDmg(globals.extraDamage + charBaseDmg);
-            QueueFree();
+            canMove = false;
         }
     }
 
@@ -157,6 +169,9 @@ public partial class Enemy : CharacterBase
     private void _on_pathfind_timeout(){
         if (CurrentState == EnemyState.aggro){
             NavAgent.TargetPosition = GetPlayerPos();
+        }
+        if (enemytypeselection == EnemyType.c4 && !canMove){
+            QueueFree();
         }
     }
 

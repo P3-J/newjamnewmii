@@ -6,6 +6,8 @@ public partial class CharacterBase : CharacterBody2D
     [Export] public int MaxHp = 10;
     [Export] public float Speed = 200.0f;
     [Export] AudioStreamPlayer hitsound;
+
+    [Export] AnimatedSprite2D baseSprite;
     public int CurrentHp;
     public float charBaseProjSize;
     public int charBaseDmg;
@@ -23,6 +25,7 @@ public partial class CharacterBase : CharacterBody2D
     public Globals globals;
     public SignalBus sgbus;
     public bool canMove = true;
+    private Timer hitTimer;
 
     public override void _Ready()
     {
@@ -32,6 +35,7 @@ public partial class CharacterBase : CharacterBody2D
 
         CurrentHp = MaxHp; // holyC
         UpdateStats();
+        createHitFlash();
         // Traitply on new trait signal
         sgbus.Connect("NewTraitSelected", new Callable(this, nameof(UpdateStats)));
     }
@@ -53,7 +57,7 @@ public partial class CharacterBase : CharacterBody2D
 
         wallPenChance = globals.globalWallPenetrationChance;
 
-        MaxHp =(int)Math.Round(MaxHp - globals.globalHealthMulti);
+        MaxHp = MaxHp + globals.extraHealth;
     }
 
     public virtual void TakeDmg(int dmg)
@@ -63,12 +67,35 @@ public partial class CharacterBase : CharacterBody2D
             hitsound.Play();
         }
 
+        HitFlash();
+
         if (CurrentHp <= 0)
         {
             Die();
         }
 
-        
+    }
+
+
+    public void HitFlash(){
+
+        if (baseSprite == null) {return;}
+        baseSprite.Material.Set("shader_parameter/active", true);
+        hitTimer.Start();
+    }
+
+    private void createHitFlash()
+    {
+        hitTimer = new Timer();
+        hitTimer.WaitTime = 0.2f; 
+        hitTimer.OneShot = true;
+        hitTimer.Timeout += TurnHitFlashOff;
+        AddChild(hitTimer);
+    }
+
+    private void TurnHitFlashOff(){
+       baseSprite.Material.Set("shader_parameter/active", false); 
+       GD.Print("here2");
     }
 
     public void Die()

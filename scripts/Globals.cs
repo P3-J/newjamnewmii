@@ -17,7 +17,7 @@ public partial class Globals : Node
 
     public int globalDamageMulti = 1;
 
-    public float globalHealthMulti = 1f;
+    public int extraHealth = 0;
 
     public float globalCharSizeMulti = 1f;
 
