@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ei7p583g2r5r"]
+[gd_scene load_steps=3 format=3 uid="uid://ei7p583g2r5r"]
 
 [ext_resource type="Script" path="res://scripts/finalscene.cs" id="1_orjkv"]
+[ext_resource type="FontFile" uid="uid://ngnk36wo0mxm" path="res://textures/Crang.ttf" id="2_ioeqw"]
 
 [node name="finalscene" type="Node2D"]
 script = ExtResource("1_orjkv")
@@ -17,6 +18,7 @@ offset_left = 344.0
 offset_top = 314.0
 offset_right = 874.0
 offset_bottom = 448.0
+theme_override_fonts/normal_font = ExtResource("2_ioeqw")
 theme_override_font_sizes/normal_font_size = 24
 text = "You have escaped the dungeon"
 
@@ -25,6 +27,6 @@ offset_left = 426.0
 offset_top = 372.0
 offset_right = 634.0
 offset_bottom = 408.0
-text = "Back to Menu"
+text = "Go for another round"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
