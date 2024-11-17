@@ -21,7 +21,7 @@ public partial class Globals : Node
 
     public float globalCharSizeMulti = 1f;
 
-    public float globalWallPenetrationChance = 1f;
+    public float globalWallPenetrationChance = 0f;
 
     public float globalProjSpeedMulti = 1f;
 

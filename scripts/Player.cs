@@ -5,8 +5,11 @@ using Godot;
 
 public partial class Player : CharacterBase
 {
-    [Export] public PackedScene BulletScene;
-    [Export] public Playerui playeruicontroller;
+    [Export]
+    public PackedScene BulletScene;
+
+    [Export]
+    public Playerui playeruicontroller;
     Node2D AimSpotParent;
     Sprite2D GunSprite;
     Marker2D BulletSpot; // where bullet should aim towards
@@ -142,13 +145,8 @@ public partial class Player : CharacterBase
         Bullet bullet = (Bullet)BulletScene.Instantiate();
         bullet.Position = BulletSpawnPoint.GlobalPosition;
         bullet.BulletOwner = this;
+        bullet.dmg = charBaseDmg;
 
-        // globals/traits applied here
-        bullet.dmg = charBaseDmg + globals.extraDamage;
-        bullet.Scale = Vector2.One * (charBaseProjSize * globals.globalPlayerStatMulti);
-        bullet.wallPenChance = wallPenChance;
-        bullet.Speed *= charBaseProjSpeed * globals.globalPlayerStatMulti;
-        //
         Vector2 Direction = (
             BulletSpot.GlobalPosition - BulletSpawnPoint.GlobalPosition
         ).Normalized();

@@ -3,11 +3,17 @@ using Godot;
 
 public partial class CharacterBase : CharacterBody2D
 {
-    [Export] public int MaxHp = 10;
-    [Export] public float Speed = 200.0f;
-    [Export] AudioStreamPlayer hitsound;
+    [Export]
+    public int MaxHp = 10;
 
-    [Export] AnimatedSprite2D baseSprite;
+    [Export]
+    public float Speed = 200.0f;
+
+    [Export]
+    AudioStreamPlayer hitsound;
+
+    [Export]
+    AnimatedSprite2D baseSprite;
     public int CurrentHp;
     public float charBaseProjSize;
     public int charBaseDmg;
@@ -31,7 +37,6 @@ public partial class CharacterBase : CharacterBody2D
     {
         globals = GetNode<Globals>("/root/Globals");
         sgbus = GetNode<SignalBus>("/root/SignalBus");
-
 
         CurrentHp = MaxHp; // holyC
         UpdateStats();
@@ -57,13 +62,14 @@ public partial class CharacterBase : CharacterBody2D
 
         wallPenChance = globals.globalWallPenetrationChance;
 
-        MaxHp = MaxHp + globals.extraHealth;
+        MaxHp += globals.extraHealth;
     }
 
     public virtual void TakeDmg(int dmg)
     {
         CurrentHp -= dmg;
-        if (hitsound != null){
+        if (hitsound != null)
+        {
             hitsound.Play();
         }
 
@@ -73,13 +79,14 @@ public partial class CharacterBase : CharacterBody2D
         {
             Die();
         }
-
     }
 
-
-    public void HitFlash(){
-
-        if (baseSprite == null) {return;}
+    public void HitFlash()
+    {
+        if (baseSprite == null)
+        {
+            return;
+        }
         baseSprite.Material.Set("shader_parameter/active", true);
         hitTimer.Start();
     }
@@ -87,7 +94,7 @@ public partial class CharacterBase : CharacterBody2D
     private void createHitFlash()
     {
         hitTimer = new Timer();
-        hitTimer.WaitTime = 0.2f; 
+        hitTimer.WaitTime = 0.2f;
         hitTimer.OneShot = true;
         hitTimer.Timeout += TurnHitFlashOff;
         AddChild(hitTimer);
