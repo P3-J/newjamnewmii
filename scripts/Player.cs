@@ -58,7 +58,10 @@ public partial class Player : CharacterBase
     {
         Vector2 velocity = Velocity;
 
-        if (!canMove){ return;}
+        if (!canMove)
+        {
+            return;
+        }
 
         Vector2 direction = Input.GetVector("left", "right", "up", "down");
         SetPlayerSpriteDirection(direction); // stupid pidevalt checkida ja mitte siis kui inputi pariselt vajutatakse aga whatever
@@ -81,13 +84,18 @@ public partial class Player : CharacterBase
     public override void Die()
     {
         base.Die();
-        if (!IsInGroup("Player")){return;}
+        if (!IsInGroup("Player"))
+        {
+            return;
+        }
         canMove = false;
         globals.currentFloor = 0;
         PlayerSprites.Visible = false;
         GunSprite.Visible = false;
         explosionsprite.Visible = true;
         explosionSound.Play();
+
+        globals.ReloadGlobals();
     }
 
     private void SetPlayerSpriteDirection(Vector2 direction)
@@ -142,7 +150,10 @@ public partial class Player : CharacterBase
 
     private void ShootBullet()
     {
-        if (!canMove){return;}
+        if (!canMove)
+        {
+            return;
+        }
         Bullet bullet = (Bullet)BulletScene.Instantiate();
         bullet.Position = BulletSpawnPoint.GlobalPosition;
         bullet.BulletOwner = this;
@@ -170,12 +181,11 @@ public partial class Player : CharacterBase
         GunShotSound.Play();
     }
 
-
-    public void _on_explosionsound_finished(){
+    public void _on_explosionsound_finished()
+    {
         string roomFile = "res://scenes/levels/mainmenu.tscn";
-		GetTree().ChangeSceneToFile(roomFile); 
+        GetTree().ChangeSceneToFile(roomFile);
     }
-
 
     public override void TakeDmg(int dmg)
     {

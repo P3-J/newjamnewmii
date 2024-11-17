@@ -12,6 +12,7 @@ public partial class Globals : Node
     public int extraDamage = 0;
 
     public float globalEnemyStatMulti = 0.8f;
+    public float globalPlayerStatMulti = 1f;
 
     public float globalProjSizeMulti = 1f;
 
@@ -25,11 +26,15 @@ public partial class Globals : Node
 
     public float globalProjSpeedMulti = 1f;
 
-    public float globalPlayerStatMulti = 1f;
-
     // Delay between bullets in milliseconds
     public float globalFireRate = 800f;
 
     // Used for bullet.Direction.Rotated()
     public float globalSpreadMulti = 0.15f;
+
+    public void ReloadGlobals()
+    {
+        Globals freshGlobals = new() { Name = "Globals" };
+        this.ReplaceBy(freshGlobals);
+    }
 }
