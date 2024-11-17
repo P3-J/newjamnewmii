@@ -161,6 +161,12 @@ public partial class Enemy : CharacterBase
 
         Vector2 spreadDirection = Direction.Rotated(SpreadValue);
         bullet.Direction = spreadDirection;
+
+        bullet.dmg = charBaseDmg + globals.extraDamage;
+        bullet.Scale = Vector2.One * (charBaseProjSize * globals.globalPlayerStatMulti);
+        bullet.wallPenChance = wallPenChance;
+        bullet.Speed *= charBaseProjSpeed * globals.globalPlayerStatMulti;
+
         bullet.LookAt(bullet.Position + spreadDirection);
         GetTree().CurrentScene.AddChild(bullet);
   
@@ -171,7 +177,7 @@ public partial class Enemy : CharacterBase
             NavAgent.TargetPosition = GetPlayerPos();
         }
         if (enemytypeselection == EnemyType.c4 && !canMove){
-            QueueFree();
+            Die();
         }
     }
 

@@ -30,7 +30,7 @@ position = Vector2(-284, -200)
 [node name="pickups" type="Node2D" parent="."]
 
 [node name="pickup" parent="pickups" instance=ExtResource("6_dvl3l")]
-position = Vector2(-56, 24)
+position = Vector2(0, -4)
 
 [node name="sorter" type="Node2D" parent="."]
 y_sort_enabled = true

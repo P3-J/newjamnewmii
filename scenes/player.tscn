@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://of5b0s8j2tsu"]
+[gd_scene load_steps=28 format=3 uid="uid://of5b0s8j2tsu"]
 
 [ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_c13ed"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_rfdtd"]
@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://bwvm8yvcclxw7" path="res://scenes/playerui.tscn" id="9_dyq4w"]
 [ext_resource type="AudioStream" uid="uid://cd78ib1l2q7rd" path="res://sounds/explosion.wav" id="11_wl1p4"]
 [ext_resource type="AudioStream" uid="uid://bxafk6tm7s6t8" path="res://sounds/hitHurt.wav" id="12_qyo5r"]
+[ext_resource type="Texture2D" uid="uid://ehhox0xdky" path="res://textures/char/explo.png" id="13_1i1v4"]
+[ext_resource type="AudioStream" uid="uid://bb2pbi7jamhsh" path="res://sounds/expo2.wav" id="14_x4pt2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xx8r0"]
 size = Vector2(32, 12)
@@ -384,3 +386,19 @@ stream = ExtResource("12_qyo5r")
 libraries = {
 "": SubResource("AnimationLibrary_0krth")
 }
+
+[node name="deathnode" type="Node2D" parent="."]
+
+[node name="explosion" type="Sprite2D" parent="deathnode"]
+visible = false
+z_index = 100
+texture_filter = 1
+position = Vector2(7, 4)
+scale = Vector2(2.59375, 2.25)
+texture = ExtResource("13_1i1v4")
+
+[node name="explosionsound" type="AudioStreamPlayer" parent="deathnode"]
+stream = ExtResource("14_x4pt2")
+pitch_scale = 0.63
+
+[connection signal="finished" from="deathnode/explosionsound" to="." method="_on_explosionsound_finished"]
