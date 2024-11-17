@@ -19,6 +19,8 @@ public partial class Player : CharacterBase
     Node2D GunChildrenBurgerFlipper;
     AnimationPlayer PlayerGeneralAnims;
     AudioStreamPlayer GunShotSound;
+    AudioStreamPlayer explosionSound;
+    Sprite2D explosionsprite;
 
     Camera2D ViewPortCamera; // not real cam just viewport
 
@@ -45,6 +47,8 @@ public partial class Player : CharacterBase
         ViewPortCamera = GetViewport().GetCamera2D();
         PlayerGeneralAnims = GetNode<AnimationPlayer>("animations/AnimationPlayer");
         GunShotSound = GetNode<AudioStreamPlayer>("sounds/shoot");
+        explosionSound = GetNode<AudioStreamPlayer>("deathnode/explosionsound");
+        explosionsprite = GetNode<Sprite2D>("deathnode/explosion");
 
         playeruicontroller.HpBarController(CurrentHp, MaxHp);
     }
@@ -52,6 +56,8 @@ public partial class Player : CharacterBase
     public override void _PhysicsProcess(double delta)
     {
         Vector2 velocity = Velocity;
+
+        if (!canMove){ return;}
 
         Vector2 direction = Input.GetVector("left", "right", "up", "down");
         SetPlayerSpriteDirection(direction); // stupid pidevalt checkida ja mitte siis kui inputi pariselt vajutatakse aga whatever
@@ -69,6 +75,18 @@ public partial class Player : CharacterBase
 
         Velocity = velocity;
         MoveAndSlide();
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        if (!IsInGroup("Player")){return;}
+        canMove = false;
+        globals.currentFloor = 0;
+        PlayerSprites.Visible = false;
+        GunSprite.Visible = false;
+        explosionsprite.Visible = true;
+        explosionSound.Play();
     }
 
     private void SetPlayerSpriteDirection(Vector2 direction)
@@ -123,6 +141,7 @@ public partial class Player : CharacterBase
 
     private void ShootBullet()
     {
+        if (!canMove){return;}
         Bullet bullet = (Bullet)BulletScene.Instantiate();
         bullet.Position = BulletSpawnPoint.GlobalPosition;
         bullet.BulletOwner = this;
@@ -150,10 +169,16 @@ public partial class Player : CharacterBase
         GunShotSound.Play();
     }
 
+
+    public void _on_explosionsound_finished(){
+        string roomFile = "res://scenes/levels/mainmenu.tscn";
+		GetTree().ChangeSceneToFile(roomFile); 
+    }
+
+
     public override void TakeDmg(int dmg)
     {
         base.TakeDmg(dmg);
-        GD.Print("player took dmg");
         playeruicontroller.HpBarController(CurrentHp, MaxHp);
     }
 

@@ -100,13 +100,11 @@ public partial class CharacterBase : CharacterBody2D
         AddChild(hitTimer);
     }
 
-    private void TurnHitFlashOff()
-    {
-        baseSprite.Material.Set("shader_parameter/active", false);
-        GD.Print("here2");
+    private void TurnHitFlashOff(){
+       baseSprite.Material.Set("shader_parameter/active", false); 
     }
 
-    public void Die()
+    public virtual void Die()
     {
         if (this.IsInGroup("Enemy"))
         {

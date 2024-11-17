@@ -21,6 +21,8 @@ public partial class Playerui : Control
 		hpbar.MaxValue = maxHp;
 		hpbar.Value = cHp;
 
+		GD.Print(cHp, maxHp, " hp");
+
 		int newSize = (int)Math.Round(10f * maxHp);
 		hpbar.Size = new Vector2(newSize, hpbar.Size.Y);
 		hptext.Text = cHp.ToString() + "/" + maxHp.ToString();
