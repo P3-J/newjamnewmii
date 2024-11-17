@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://uagm8cm251tb"]
+[gd_scene load_steps=10 format=3 uid="uid://uagm8cm251tb"]
 
 [ext_resource type="Script" path="res://scripts/RoomController.cs" id="1_ovlwx"]
 [ext_resource type="PackedScene" uid="uid://bs7wjgdmx1le2" path="res://scenes/tile_map.tscn" id="4_hx7dh"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/scene_switcher.tscn" id="5_ob2gc"]
 [ext_resource type="PackedScene" uid="uid://kpernr7ur5p4" path="res://scenes/pickup.tscn" id="6_dvl3l"]
 [ext_resource type="PackedScene" uid="uid://cpya81q5kehfq" path="res://scenes/patrolpath.tscn" id="7_o0hrf"]
+[ext_resource type="PackedScene" uid="uid://dkbt0ss44t3at" path="res://scenes/trait_selection.tscn" id="8_x8nu0"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_eh26l"]
 vertices = PackedVector2Array(109.453, 85.3438, 75.5234, 85, 109.461, 85, 123, 69, 139, 69, 139, 75, 117, 75, 117, -59, 123, -59, 91, -27, 91, 43, 75, 43, 37, 37, 37, 20.6016, 75, -27, -37, 20.6016, -37, 37, -48.3438, 32.7266, -48.3438, -17.7969, 59, -43, 75, -43, 11, 20.6016, 11, 37, -11, 37, -11, 20.6016, 75, 59, -75, 59, -63.6563, 32.7266, -75, 43, -63.6563, -17.7969, -91, 43, -91, -27, -75, -27, -75, -43, -59, -43, -59, -59, 59, -59)
@@ -60,13 +61,6 @@ AggroRange = 450
 MaxHp = 5
 Speed = 70.0
 
-[node name="enemy3" parent="sorter" instance=ExtResource("5_5707u")]
-position = Vector2(-132, -260)
-enemytypeselection = 1
-AggroRange = 450
-MaxHp = 5
-Speed = 70.0
-
 [node name="patrolpaths" type="Node2D" parent="."]
 
 [node name="startpos" parent="patrolpaths" instance=ExtResource("7_o0hrf")]
@@ -74,5 +68,9 @@ position = Vector2(-364, -200)
 
 [node name="endpos" parent="patrolpaths/startpos" index="0"]
 position = Vector2(712, 448)
+
+[node name="TraitSelection" parent="." instance=ExtResource("8_x8nu0")]
+offset_top = 16.0
+offset_bottom = 16.0
 
 [editable path="patrolpaths/startpos"]

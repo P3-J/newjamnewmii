@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://of5b0s8j2tsu"]
+[gd_scene load_steps=27 format=3 uid="uid://of5b0s8j2tsu"]
 
 [ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_c13ed"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_rfdtd"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://bjwqusnsw4r21" path="res://textures/char/expo.png" id="4_v7egp"]
 [ext_resource type="Texture2D" uid="uid://brw6df8soad81" path="res://textures/char/bulletback.png" id="5_6b2ck"]
 [ext_resource type="Texture2D" uid="uid://doe0lkw5lgpax" path="res://textures/char/bulletside.png" id="6_1n723"]
-[ext_resource type="PackedScene" uid="uid://dkbt0ss44t3at" path="res://scenes/trait_selection.tscn" id="8_oqc5n"]
 [ext_resource type="PackedScene" uid="uid://bwvm8yvcclxw7" path="res://scenes/playerui.tscn" id="9_dyq4w"]
 [ext_resource type="AudioStream" uid="uid://cd78ib1l2q7rd" path="res://sounds/explosion.wav" id="11_wl1p4"]
 [ext_resource type="AudioStream" uid="uid://bxafk6tm7s6t8" path="res://sounds/hitHurt.wav" id="12_qyo5r"]
@@ -351,8 +350,6 @@ libraries = {
 "": SubResource("AnimationLibrary_vawye")
 }
 autoplay = "walkleft"
-
-[node name="TraitSelection" parent="." instance=ExtResource("8_oqc5n")]
 
 [node name="hitboxparent" type="Area2D" parent="." groups=["Player"]]
 collision_layer = 3
