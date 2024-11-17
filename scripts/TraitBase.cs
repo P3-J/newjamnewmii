@@ -63,13 +63,37 @@ public class TraitBase
             case 6:
                 return new string[]
                 {
-                    "+20% to Projectile Speed\n+1 to Damage",
-                    "Fast...but not furious",
+                    "+30% to Projectile Speed\n+1 to Damage",
+                    "Fast and furious",
                 };
             case 7:
                 return new string[] { "+40% to Fire rate\n-15% to Accuracy", "Rambo" };
             default:
                 return new string[] { "error with retrival", "error with retrival" };
+        }
+    }
+
+    public static string GetTraitIcon(int TraitNumber)
+    {
+        switch (TraitNumber)
+        {
+            case 1:
+                return "res://textures/traiticons/projsize.png";
+            case 2:
+                return "res://textures/traiticons/ragetrait.png";
+            case 3:
+                return "res://textures/traiticons/minitrait.png";
+            case 4:
+                return "res://textures/traiticons/workouttrait.png";
+            case 5:
+                return "res://textures/traiticons/walltrait.png";
+            case 6:
+                return "res://textures/traiticons/fastnfurioustrait.png";
+            case 7:
+                return "res://textures/traiticons/rambotrait.png";
+
+            default:
+                return "res://icon.svg";
         }
     }
 
@@ -104,14 +128,14 @@ public class TraitBase
 
     private static void ApplyProjSpeedTrait(Globals globals)
     {
-        globals.globalProjSpeedMulti *= 1.15f;
-        globals.extraDamage += 2;
+        globals.globalProjSpeedMulti *= 1.3f;
+        globals.extraDamage += 1;
     }
 
     private static void ApplyFireRateTrait(Globals globals)
     {
         // firerate = time between bullets
-        globals.globalFireRate -= 400f;
+        globals.globalFireRate *= 0.6f;
         globals.globalSpreadMulti *= 1.15f;
     }
 }
