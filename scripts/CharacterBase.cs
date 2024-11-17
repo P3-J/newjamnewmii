@@ -33,6 +33,8 @@ public partial class CharacterBase : CharacterBody2D
     public bool canMove = true;
     private Timer hitTimer;
 
+    public bool dying = false;
+
     public override void _Ready()
     {
         globals = GetNode<Globals>("/root/Globals");
@@ -75,8 +77,9 @@ public partial class CharacterBase : CharacterBody2D
 
         HitFlash();
 
-        if (CurrentHp <= 0)
+        if (CurrentHp <= 0 && !dying)
         {
+            dying = true;
             Die();
         }
     }
