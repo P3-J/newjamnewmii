@@ -1,9 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://kpernr7ur5p4"]
+[gd_scene load_steps=5 format=3 uid="uid://kpernr7ur5p4"]
 
 [ext_resource type="Texture2D" uid="uid://pbmvfl8d4auo" path="res://icon.svg" id="1_7lmhs"]
 [ext_resource type="Script" path="res://scripts/Pickup.cs" id="1_4672s"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pmosi"]
+
+[sub_resource type="Curve" id="Curve_kr4vu"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="pickup" type="Node2D"]
 script = ExtResource("1_4672s")
@@ -15,8 +19,20 @@ shape = SubResource("CircleShape2D_pmosi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.057, 3.784, 0.043, 1)
-position = Vector2(1.90735e-06, 1.90735e-06)
-scale = Vector2(0.15625, 0.15625)
+scale = Vector2(0.09375, 0.09375)
 texture = ExtResource("1_7lmhs")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 13.02
+initial_velocity_max = 13.02
+angular_velocity_min = -148.31
+angular_velocity_max = 0.35
+angle_min = -320.5
+scale_amount_max = 5.0
+scale_amount_curve = SubResource("Curve_kr4vu")
+color = Color(0, 1, 0, 1)
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

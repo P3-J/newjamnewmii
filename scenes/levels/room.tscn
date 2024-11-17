@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b7banxw8oka0t"]
+[gd_scene load_steps=6 format=3 uid="uid://b7banxw8oka0t"]
 
 [ext_resource type="Script" path="res://scripts/RoomController.cs" id="1_b6rho"]
 [ext_resource type="PackedScene" uid="uid://bs7wjgdmx1le2" path="res://scenes/tile_map.tscn" id="2_xjo6b"]
 [ext_resource type="PackedScene" uid="uid://of5b0s8j2tsu" path="res://scenes/player.tscn" id="3_05viq"]
-[ext_resource type="PackedScene" path="res://scenes/scene_switcher.tscn" id="5_p7dxb"]
+[ext_resource type="Texture2D" uid="uid://bm34428lef84l" path="res://textures/char/controls.png" id="5_j17fp"]
+[ext_resource type="PackedScene" uid="uid://c4fcaihjlmec4" path="res://scenes/scene_switcher.tscn" id="5_p7dxb"]
 
 [node name="room" type="Node2D"]
 script = ExtResource("1_b6rho")
@@ -27,3 +28,9 @@ layer_1/tile_data = PackedInt32Array(-131078, 196610, 1, -131077, 262146, 1, -13
 position = Vector2(0, 268)
 
 [node name="pickups" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(200, -42)
+scale = Vector2(2.04688, 2)
+texture = ExtResource("5_j17fp")

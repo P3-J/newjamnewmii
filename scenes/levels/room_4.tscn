@@ -1,0 +1,87 @@
+[gd_scene load_steps=10 format=3 uid="uid://c0e3le8y402fx"]
+
+[ext_resource type="Script" path="res://scripts/RoomController.cs" id="1_ocp78"]
+[ext_resource type="PackedScene" uid="uid://c4fcaihjlmec4" path="res://scenes/scene_switcher.tscn" id="2_huuoc"]
+[ext_resource type="PackedScene" uid="uid://kpernr7ur5p4" path="res://scenes/pickup.tscn" id="3_5etkh"]
+[ext_resource type="PackedScene" uid="uid://of5b0s8j2tsu" path="res://scenes/player.tscn" id="4_1vkc4"]
+[ext_resource type="PackedScene" uid="uid://dxhxix5mq7m6h" path="res://scenes/enemy.tscn" id="5_tcwdb"]
+[ext_resource type="PackedScene" uid="uid://bs7wjgdmx1le2" path="res://scenes/tile_map.tscn" id="6_y6jvp"]
+[ext_resource type="PackedScene" uid="uid://cpya81q5kehfq" path="res://scenes/patrolpath.tscn" id="7_wv25s"]
+[ext_resource type="PackedScene" uid="uid://dkbt0ss44t3at" path="res://scenes/trait_selection.tscn" id="8_62hpu"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_eh26l"]
+vertices = PackedVector2Array(109.453, 85.3438, 75.5234, 85, 109.461, 85, 139, 75, 133, 75, 133, 69, 139, 69, -27, -27, 75, -43, 91, -43, 91, -27, 47.6563, -16.7266, 32.3438, -16.7266, -27, -43.3984, 75, -59, -107, -59, -85, -43.3984, -107, -37, -91, -37, -85, -27, -91, -21, -75, -21, 107, -27, 107, -5, 91, -5, 91, 37, 85, 43, 47.6563, 37, 32.3438, 20.6016, -0.34375, 20.6016, -0.34375, -16.7266, -15.6563, -16.7266, 107, 37, 107, 59, 85, 59, 43, 43, -15.6563, 37, 43, 59, -11, 59, -11, 43, -53, 43, -53, 59, -75, 59, -75, 43, -91, 43, -91, 27, -75, 5, -107, 27, -107, 21, -91, 21, -91, 5)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(3, 4, 5, 6), PackedInt32Array(7, 8, 9, 10, 11, 12), PackedInt32Array(8, 7, 13, 14), PackedInt32Array(15, 14, 13, 16), PackedInt32Array(17, 15, 16, 18), PackedInt32Array(18, 16, 19, 20), PackedInt32Array(21, 20, 19, 7), PackedInt32Array(10, 22, 23, 24, 11), PackedInt32Array(24, 25, 26, 27, 11), PackedInt32Array(12, 28, 29, 30), PackedInt32Array(7, 12, 30), PackedInt32Array(7, 30, 31), PackedInt32Array(25, 32, 33, 34, 26), PackedInt32Array(27, 26, 35, 36), PackedInt32Array(35, 37, 38, 39), PackedInt32Array(36, 35, 39), PackedInt32Array(36, 39, 40), PackedInt32Array(40, 41, 42, 43), PackedInt32Array(43, 44, 45, 46), PackedInt32Array(45, 47, 48, 49), PackedInt32Array(49, 50, 46), PackedInt32Array(40, 46, 21, 7, 31, 36), PackedInt32Array(46, 40, 43), PackedInt32Array(46, 45, 49)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-110.4, -66.4, 116, -64.8, 114.4, 90.4, -119.2, 88)])
+cell_size = 5.0
+agent_radius = 5.0
+
+[node name="room4" type="Node2D" node_paths=PackedStringArray("pickup")]
+script = ExtResource("1_ocp78")
+pickup = NodePath("pickups/pickup")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 16)
+scale = Vector2(0.5, 0.5)
+
+[node name="SceneSwitcher" parent="." instance=ExtResource("2_huuoc")]
+position = Vector2(204, -276)
+
+[node name="pickups" type="Node2D" parent="."]
+
+[node name="pickup" parent="pickups" instance=ExtResource("3_5etkh")]
+position = Vector2(132, 30)
+
+[node name="sorter" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="player" parent="sorter" instance=ExtResource("4_1vkc4")]
+position = Vector2(84, 258)
+
+[node name="enemy" parent="sorter" instance=ExtResource("5_tcwdb")]
+position = Vector2(-280, 2)
+AggroRange = 400
+MaxHp = 4
+Speed = 160.0
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="sorter"]
+y_sort_enabled = true
+scale = Vector2(5, 5)
+navigation_polygon = SubResource("NavigationPolygon_eh26l")
+
+[node name="TileMap" parent="sorter/NavigationRegion2D" instance=ExtResource("6_y6jvp")]
+scale = Vector2(1, 1)
+layer_0/tile_data = PackedInt32Array(-262138, 589825, 2, 196601, 589825, 2, 65529, 589825, 2, -7, 589825, 2, -65543, 589825, 2, -262139, 589825, 2, 65542, 589825, 2, 6, 589825, 2, -196602, 589825, 2, 262150, 589825, 2, 327673, 589825, 2, 262137, 589825, 2, 262149, 589825, 2, 262148, 589825, 2, 262147, 589825, 2, 262146, 589825, 2, 262145, 589825, 2, 262144, 589825, 2, 327679, 589825, 2, 327678, 589825, 2, 327677, 589825, 2, 327676, 589825, 2, 327675, 589825, 2, 327674, 589825, 2, 262151, 589825, 2, 196615, 589825, 2, 131079, 589825, 2, 65543, 589825, 2, 7, 589825, 2, -65529, 589825, 2, -131065, 589825, 2, -196601, 589825, 2, -262137, 589825, 2, -327673, 589825, 2, -327674, 589825, 2, -327675, 589825, 2, -327676, 589825, 2, -327677, 589825, 2, -327678, 589825, 2, -327679, 589825, 2, -327680, 589825, 2, -262145, 589825, 2, -262146, 589825, 2, -262147, 589825, 2, -262148, 589825, 2, -262149, 589825, 2, -262150, 589825, 2, -262151, 589825, 2, -262152, 589825, 2, -196616, 589825, 2, -131080, 589825, 2, -65544, 589825, 2, -8, 589825, 2, 65528, 589825, 2, 131064, 589825, 2, 196600, 589825, 2, 262136, 589825, 2, 327672, 589825, 2, 262138, 589825, 2, -6, 589825, 2, 262141, 589825, 2, 262142, 589825, 2, 196611, 589825, 2, 196612, 589825, 2, -131077, 1, 3, -131076, 1, 3, -131075, 1, 3, 262143, 1, 2, 196607, 1, 1, 131071, 65537, 0, 196610, 1, 2, 131074, 1, 1, 65538, 196609, 0, 65537, 65537, 2, 65536, 196609, 2, 65532, 1, 3, -131067, 1, 3, -131068, 1, 3)
+layer_1/tile_data = PackedInt32Array(-131078, 131074, 1, -131077, 65538, 1, -131076, 2, 5, -131075, 2, 0, -131074, 2, 0, -131073, 2, 0, -196608, 2, 0, -196607, 2, 0, -196606, 2, 0, -196605, 2, 0, -196604, 2, 0, -196603, 2, 0, -131079, 65538, 2, -65543, 2, 0, -7, 2, 0, 65529, 2, 0, 131065, 2, 0, 196601, 2, 0, 262137, 2, 0, 262138, 2, 0, 262139, 2, 0, 262140, 2, 0, 262141, 2, 0, 262142, 2, 0, 262143, 2, 0, 196608, 2, 0, 196609, 2, 0, 196610, 2, 0, 196611, 65538, 2, 196612, 2, 1, 196613, 2, 1, 196614, 2, 0, 131078, 2, 0, 65542, 2, 0, 6, 2, 0, -65530, 2, 0, -131066, 2, 0, -196602, 2, 0, -262138, 2, 0, 327673, 2, 0, 327674, 2, 0, 327675, 2, 0, 327676, 2, 0, 327677, 2, 0, 327678, 2, 0, 327679, 2, 0, 262144, 2, 0, 262145, 2, 0, 262146, 2, 0, 262147, 2, 0, 262148, 2, 0, 262149, 65538, 0, 262150, 65538, 2, 262151, 2, 0, 196615, 2, 0, 131079, 2, 0, 65543, 2, 0, 7, 2, 0, -65529, 2, 0, -131065, 2, 0, -196601, 2, 0, -262137, 2, 0, -131067, 2, 0, -131068, 2, 0, -131069, 2, 0, -131070, 2, 0, -131071, 2, 0, -131072, 2, 0, -65537, 2, 0, -65538, 2, 0, -65539, 2, 0, -65540, 2, 1, -65541, 65538, 1, -65542, 2, 0, -196615, 131074, 1, -65531, 2, 0, -65532, 2, 0, -65533, 2, 0, -65534, 2, 0, -65535, 2, 0, -65536, 2, 0, -1, 2, 0, -2, 2, 0, -3, 2, 1, -4, 65538, 0, -5, 2, 0, -6, 2, 0, 65530, 2, 0, 131066, 2, 0, 196602, 2, 0, 196603, 2, 0, 196604, 2, 0, 196605, 2, 0, 196606, 2, 0, 196607, 2, 0, 131072, 2, 0, 131073, 131074, 0, 131074, 2, 1, 131075, 65538, 2, 131076, 2, 0, 131077, 2, 0, 65541, 2, 0, 5, 2, 0, 4, 2, 0, 3, 2, 0, 2, 2, 0, 1, 2, 0, 0, 2, 0, 65535, 131074, 0, 65534, 65538, 0, 65533, 2, 0, 65532, 2, 0, 65531, 2, 0, 131067, 2, 0, 131068, 2, 0, 131069, 2, 0, 131070, 2, 0, 131071, 65538, 2, 65536, 65538, 0, 65537, 2, 0, 65538, 2, 0, 65539, 2, 0, 65540, 2, 0, 262152, 2, 0, -196614, 2, 0, -196613, 2, 0, -196612, 2, 0, -196611, 2, 0, -196610, 2, 0, -196609, 2, 0, -262144, 2, 0, -262143, 2, 0, -262142, 2, 5, -262141, 2, 0, -262140, 2, 0, -262139, 2, 0)
+
+[node name="enemy2" parent="sorter" instance=ExtResource("5_tcwdb")]
+position = Vector2(400, -154)
+AggroRange = 350
+MaxHp = 4
+Speed = 160.0
+
+[node name="enemy3" parent="sorter" instance=ExtResource("5_tcwdb")]
+position = Vector2(-232, -226)
+AggroRange = 350
+MaxHp = 4
+Speed = 160.0
+
+[node name="enemy4" parent="sorter" instance=ExtResource("5_tcwdb")]
+position = Vector2(164, 104)
+AggroRange = 350
+MaxHp = 4
+Speed = 160.0
+
+[node name="patrolpaths" type="Node2D" parent="."]
+
+[node name="startpos" parent="patrolpaths" instance=ExtResource("7_wv25s")]
+position = Vector2(-330, 250)
+
+[node name="endpos" parent="patrolpaths/startpos" index="0"]
+position = Vector2(810, -6)
+
+[node name="TraitSelection" parent="." instance=ExtResource("8_62hpu")]
+offset_top = 16.0
+offset_bottom = 16.0
+
+[editable path="patrolpaths/startpos"]

@@ -4,14 +4,14 @@
 [ext_resource type="PackedScene" uid="uid://bs7wjgdmx1le2" path="res://scenes/tile_map.tscn" id="4_hx7dh"]
 [ext_resource type="PackedScene" uid="uid://of5b0s8j2tsu" path="res://scenes/player.tscn" id="4_m06ka"]
 [ext_resource type="PackedScene" uid="uid://dxhxix5mq7m6h" path="res://scenes/enemy.tscn" id="5_5707u"]
-[ext_resource type="PackedScene" path="res://scenes/scene_switcher.tscn" id="5_ob2gc"]
+[ext_resource type="PackedScene" uid="uid://c4fcaihjlmec4" path="res://scenes/scene_switcher.tscn" id="5_ob2gc"]
 [ext_resource type="PackedScene" uid="uid://kpernr7ur5p4" path="res://scenes/pickup.tscn" id="6_dvl3l"]
 [ext_resource type="PackedScene" uid="uid://cpya81q5kehfq" path="res://scenes/patrolpath.tscn" id="7_o0hrf"]
 [ext_resource type="PackedScene" uid="uid://dkbt0ss44t3at" path="res://scenes/trait_selection.tscn" id="8_x8nu0"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_eh26l"]
-vertices = PackedVector2Array(109.453, 85.3438, 75.5234, 85, 109.461, 85, 123, 69, 139, 69, 139, 75, 117, 75, 117, -59, 123, -59, 91, -27, 91, 43, 75, 43, 37, 37, 37, 20.6016, 75, -27, -37, 20.6016, -37, 37, -48.3438, 32.7266, -48.3438, -17.7969, 59, -43, 75, -43, 11, 20.6016, 11, 37, -11, 37, -11, 20.6016, 75, 59, -75, 59, -63.6563, 32.7266, -75, 43, -63.6563, -17.7969, -91, 43, -91, -27, -75, -27, -75, -43, -59, -43, -59, -59, 59, -59)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(3, 4, 5, 6), PackedInt32Array(3, 6, 7, 8), PackedInt32Array(9, 10, 11, 12, 13, 14), PackedInt32Array(15, 16, 17, 18), PackedInt32Array(19, 20, 14, 13, 21), PackedInt32Array(21, 22, 23, 24), PackedInt32Array(12, 11, 25, 26, 22), PackedInt32Array(23, 22, 26), PackedInt32Array(16, 23, 26), PackedInt32Array(27, 17, 16, 26, 28), PackedInt32Array(29, 27, 28, 30, 31, 32), PackedInt32Array(29, 32, 33, 34, 18), PackedInt32Array(18, 34, 35, 36, 19), PackedInt32Array(15, 18, 19, 24), PackedInt32Array(21, 24, 19)])
+vertices = PackedVector2Array(109.453, 85.3438, 75.5234, 85, 109.461, 85, 123, 69, 139, 69, 139, 75, 117, 75, 117, -59, 123, -59, 91, 43, 75, 43, -48.3438, 37, -37, 37, 91, -27, 37, 37, 37, 20.6016, 75, -27, -48.3438, -16.7266, 59, -43, 75, -43, 11, 20.6016, 11, 37, -11, 37, -11, 20.6016, -63.6563, 37, 75, 59, -75, 59, -75, 43, -63.6563, -16.7266, -91, 43, -91, -27, -75, -27, -75, -43, -59, -43, -59, -59, 59, -59, -37, 20.6016)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(3, 4, 5, 6), PackedInt32Array(3, 6, 7, 8), PackedInt32Array(9, 10, 11, 12), PackedInt32Array(13, 9, 14, 15, 16), PackedInt32Array(17, 18, 19, 16, 15, 20), PackedInt32Array(20, 21, 22, 23), PackedInt32Array(24, 11, 10, 25, 26, 27), PackedInt32Array(28, 24, 27, 29, 30, 31), PackedInt32Array(28, 31, 32, 33, 17), PackedInt32Array(17, 33, 34, 35, 18), PackedInt32Array(17, 20, 23), PackedInt32Array(17, 23, 36), PackedInt32Array(11, 17, 36, 12), PackedInt32Array(9, 12, 22), PackedInt32Array(9, 22, 21), PackedInt32Array(9, 21, 14)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-110.4, -66.4, 116, -64.8, 114.4, 90.4, -119.2, 88)])
 cell_size = 5.0
 agent_radius = 5.0
@@ -42,6 +42,7 @@ position = Vector2(0, 256)
 [node name="enemy" parent="sorter" node_paths=PackedStringArray("PatrolPathStart") instance=ExtResource("5_5707u")]
 position = Vector2(-356, -16)
 PatrolPathStart = NodePath("../../patrolpaths/startpos")
+MaxHp = 5
 Speed = 170.0
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="sorter"]
