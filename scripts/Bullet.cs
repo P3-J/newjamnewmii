@@ -16,6 +16,8 @@ public partial class Bullet : Area2D
 
     private Timer _timer;
 
+    Globals globals;
+
     public override void _Process(double delta)
     {
         Position += Direction * Speed * (float)delta;
@@ -24,6 +26,19 @@ public partial class Bullet : Area2D
     public override void _Ready()
     {
         base._Ready();
+
+        // globals/traits applied here
+        globals = GetNode<Globals>("/root/Globals");
+
+        float traitsMulti = BulletOwner.IsInGroup("Player")
+            ? globals.globalPlayerStatMulti
+            : globals.globalEnemyStatMulti;
+
+        Scale = Vector2.One * (globals.globalProjSizeMulti * traitsMulti);
+        wallPenChance = globals.globalWallPenetrationChance * traitsMulti;
+        Speed *= globals.globalProjSpeedMulti * traitsMulti;
+        dmg += globals.extraDamage;
+        //
 
         Timer timer = new() { WaitTime = AliveTime, OneShot = true };
         AddChild(timer);
@@ -34,11 +49,11 @@ public partial class Bullet : Area2D
     private void _on_body_entered(Node2D node)
     {
         // check for wall penetration chance
-        if (wallPenChance < 1f)
+        if (wallPenChance > 0)
         {
             Random random = new();
             float randomFloat = random.Next(0, 1001) / 1000f;
-            if (randomFloat > wallPenChance)
+            if (randomFloat < wallPenChance)
             {
                 return;
             }
